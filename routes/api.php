@@ -9,16 +9,27 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 
-// PROTECTED ROUTES  
-Route::middleware('auth:sanctum')->group(function () {  // semua route di dalam group ini butuh autentikasi dengan Sanctum
+// GOOGLE AUTH
+Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect']);
+Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
 
-    Route::post('/bookmarks', [BookmarkController::class, 'store']);    //  menambahkan resep ke bookmark
-    Route::get('/bookmarks', [BookmarkController::class, 'index']);    //   nampilin bookmark milik si user
-    Route::delete('/bookmarks/{recipe_id}', [BookmarkController::class, 'destroy']); // menghapus bookmark user berdasarkan id resep
-    Route::post('/logout', [AuthController::class, 'logout']);  // logout user (hapus token)
+
+// PROTECTED ROUTES
+Route::middleware('auth:sanctum')->group(function () { 
+
+    // BOOKMARK
+    Route::post('/bookmarks', [BookmarkController::class, 'store']);
+    Route::get('/bookmarks', [BookmarkController::class, 'index']);
+    Route::delete('/bookmarks/{recipe_id}', [BookmarkController::class, 'destroy']);
+
+    // LOGOUT
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
+// TEST AUTH
 Route::middleware('auth:sanctum')->get('/test-auth', function () {
+
     return response()->json([
         'message' => 'AUTHORIZED',
         'user' => auth()->user()
