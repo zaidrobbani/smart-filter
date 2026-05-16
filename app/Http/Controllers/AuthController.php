@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -75,6 +76,72 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logout success'
         ]);
+    }
+
+
+    // FORGOT PASSWORD
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+
+            return response()->json([
+                'message' => 'Reset link sent successfully'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Unable to send reset link'
+        ], 400);
+    }
+
+
+    // RESET PASSWORD
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only(
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
+            ),
+
+            function ($user, $password) {
+
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->save();
+
+                $user->setRememberToken(
+                    Str::random(60)
+                );
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+
+            return response()->json([
+                'message' => 'Password reset successful'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Invalid token'
+        ], 400);
     }
 
 
