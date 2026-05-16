@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('invitations/{invitation}/accept', [TeamInvitationController::class, 'accept'])->name('invitations.accept');
 });
 
-Route::get('/recipes', [RecipeController::class, 'index']);
+Route::get('/recipes', [RecipeController::class, 'index']);     //nampilin semua resep
+Route::get('/recipes/{id}', [RecipeController::class, 'show']); //nampilin detail resep berdasarkan id
 
 require __DIR__.'/settings.php';
