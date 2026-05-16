@@ -10,12 +10,9 @@ class BookmarkController extends Controller
     public function store(Request $request)
     {
         // cek apakah recipe sudah dibookmark user
-        $existingBookmark = Bookmark::where('user_id', 1) //dummy!
+        $existingBookmark = Bookmark::where('user_id', auth()->id())
             ->where('recipe_id', $request->recipe_id)
             ->first();
-        // $existingBookmark = Bookmark::where('user_id', auth()->id())
-        //     ->where('recipe_id', $request->recipe_id)
-        //     ->first();
 
         if ($existingBookmark) {
             return response()->json([
@@ -25,8 +22,7 @@ class BookmarkController extends Controller
 
         // simpan bookmark baru
         $bookmark = Bookmark::create([
-            'user_id' => 1, // dummy 
-            //'user_id' => auth()->id(),
+            'user_id' => auth()->id(),
 
             'recipe_id' => $request->recipe_id,
             'saved_at' => now()
@@ -40,8 +36,7 @@ class BookmarkController extends Controller
 
     public function index() //nampilin semua bookmark user
     {
-        $bookmarks = Bookmark::where('user_id', 1)->get(); //dummy
-        // $bookmarks = Bookmark::where('user_id', auth()->id())->get();
+        $bookmarks = Bookmark::where('user_id', auth()->id())->get();
 
         return response()->json([
             'data' => $bookmarks
@@ -50,13 +45,9 @@ class BookmarkController extends Controller
 
     public function destroy($recipe_id)
     {
-        $bookmark = Bookmark::where('user_id', 1) // dummy
+        $bookmark = Bookmark::where('user_id', auth()->id())
             ->where('recipe_id', $recipe_id)
             ->first();
-        // nanti ganti auth()->id()
-        // $bookmark = Bookmark::where('user_id', auth()->id())
-        //     ->where('recipe_id', $recipe_id)
-        //     ->first();
 
         if (!$bookmark) {
             return response()->json([
@@ -64,7 +55,7 @@ class BookmarkController extends Controller
             ], 404);
         }
 
-        Bookmark::where('user_id', 1)
+        Bookmark::where('user_id', auth()->id())
             ->where('recipe_id', $recipe_id)
             ->delete();
 

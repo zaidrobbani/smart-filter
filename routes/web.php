@@ -25,4 +25,6 @@ Route::get('/recipes', [RecipeController::class, 'index']);       //nampilin sem
 Route::get('/recipes/{id}', [RecipeController::class, 'show']);  //nampilin detail resep berdasarkan id
 Route::post('/bookmarks', [BookmarkController::class, 'store']); //menambahkan resep ke bookmark
 
+
+
 require __DIR__.'/settings.php';
