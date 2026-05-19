@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property-read \App\Models\Ingredient|null $ingredient
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|IngredientAlias newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|IngredientAlias newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|IngredientAlias query()
+ * @mixin \Eloquent
+ */
 class IngredientAlias extends Model
 {
     public $timestamps = false;

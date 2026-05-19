@@ -4,6 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IngredientAlias> $aliases
+ * @property-read int|null $aliases_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Ingredient> $substitutedBy
+ * @property-read int|null $substituted_by_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Ingredient> $substitutes
+ * @property-read int|null $substitutes_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ingredient newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ingredient newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ingredient query()
+ * @mixin \Eloquent
+ */
 class Ingredient extends Model
 {
     public $timestamps = false;

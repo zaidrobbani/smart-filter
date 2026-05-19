@@ -1,9 +1,10 @@
 'use client';
 
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import gsap from 'gsap';
 import { Clock, ChefHat, Flame } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/component/ui/button';
 import { Separator } from '@/component/ui/separator';
 import { recipeData } from '@/data/recipe-data';
@@ -16,8 +17,28 @@ export default function RecipeShow({ id }: RecipeShowProps) {
     const recipe = recipeData.find((r) => r.id === id);
     const headerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
+    const { auth } = usePage().props as any;
 
     useEffect(() => {
+        // Record visit to history when component mounts
+        if (auth.user && recipe?.id) {
+            fetch('/api/history/record', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ recipe_id: parseInt(recipe.id) }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        console.error('Failed to record history');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error recording history:', error);
+                });
+        }
+
         // Header entrance animation
         if (headerRef.current) {
             gsap.fromTo(
@@ -123,7 +144,7 @@ export default function RecipeShow({ id }: RecipeShowProps) {
                 {/* Main Content */}
                 <div
                     ref={contentRef}
-                    className="flex w-full justify-center px-4 py-8 sm:px-6 lg:px-0 gap-8"
+                    className="flex w-full justify-center gap-8 px-4 py-8 sm:px-6 lg:px-0"
                 >
                     <div ref={contentRef} className="w-full">
                         {/* Smart Substitutions */}
@@ -228,8 +249,8 @@ export default function RecipeShow({ id }: RecipeShowProps) {
                                 <h3 className="mb-4 font-bold text-foreground">
                                     NUTRITION FACTS
                                 </h3>
-                                <div className="space-y-2 ">
-                                    <div className="flex justify-between items-center">
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                         <span className="text-xs font-medium text-muted-foreground">
                                             Calories
                                         </span>
@@ -238,7 +259,7 @@ export default function RecipeShow({ id }: RecipeShowProps) {
                                             kcal
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex items-center justify-between">
                                         <span className="text-xs font-medium text-muted-foreground">
                                             Protein
                                         </span>
@@ -246,7 +267,7 @@ export default function RecipeShow({ id }: RecipeShowProps) {
                                             {recipe.nutritionFacts.protein}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex items-center justify-between">
                                         <span className="text-xs font-medium text-muted-foreground">
                                             Fat
                                         </span>
@@ -254,7 +275,7 @@ export default function RecipeShow({ id }: RecipeShowProps) {
                                             {recipe.nutritionFacts.fat}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex items-center justify-between">
                                         <span className="text-xs font-medium text-muted-foreground">
                                             Carbs
                                         </span>
@@ -262,7 +283,7 @@ export default function RecipeShow({ id }: RecipeShowProps) {
                                             {recipe.nutritionFacts.carbs}
                                         </span>
                                     </div>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex items-center justify-between">
                                         <span className="text-xs font-medium text-muted-foreground">
                                             Fiber
                                         </span>

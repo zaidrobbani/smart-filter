@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Actions\Teams\CreateTeam;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
@@ -13,6 +14,12 @@ class LoginResponse implements LoginResponseContract
     {
         $user = $request->user();
         $team = $user?->currentTeam ?? $user?->personalTeam();
+
+        // Create a personal team if the user doesn't have one
+        if (! $team && $user) {
+            $team = app(CreateTeam::class)->handle($user, $user->username, isPersonal: true);
+            $user->refresh();
+        }
 
         if (! $team) {
             abort(403);

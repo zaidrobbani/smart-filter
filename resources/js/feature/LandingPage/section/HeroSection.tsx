@@ -2,6 +2,13 @@ import { router } from '@inertiajs/react';
 import gsap from 'gsap';
 import { useEffect, useRef, useState } from 'react';
 
+interface Suggestion {
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+}
+
 export default function HeroSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -9,6 +16,9 @@ export default function HeroSection() {
     const searchRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLDivElement>(null);
     const [query, setQuery] = useState('');
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
 
     useEffect(() => {
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -56,10 +66,49 @@ export default function HeroSection() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Fetch suggestions on query change
+    useEffect(() => {
+        // Kalau query terlalu pendek, reset langsung dan stop
+        if (query.trim().length < 2) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setSuggestions([]);
+            setShowSuggestions(false);
+            setIsLoadingSuggestions(false);
+
+            return; // ← early return, hindari setState ganda
+        }
+
+        // Kalau query valid, baru set loading
+        setIsLoadingSuggestions(true);
+
+        const timeoutId = setTimeout(() => {
+            fetch(
+                `/api/recipes/search/suggestions?q=${encodeURIComponent(query)}`,
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    setSuggestions(data.suggestions || []);
+                    setShowSuggestions(true);
+                    setIsLoadingSuggestions(false);
+                })
+                .catch(() => {
+                    setIsLoadingSuggestions(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [query]);
+
     const handleSearch = () => {
         if (query.trim()) {
-            router.get('/search', { q: query });
+            router.get('/recipes', { search: query });
         }
+    };
+
+    const handleSuggestionClick = (suggestion: Suggestion) => {
+        setQuery(suggestion.title);
+        setShowSuggestions(false);
+        router.get('/recipes', { search: suggestion.title });
     };
 
     return (
@@ -122,6 +171,10 @@ export default function HeroSection() {
                             onKeyDown={(e) =>
                                 e.key === 'Enter' && handleSearch()
                             }
+                            onFocus={() =>
+                                query.trim().length >= 2 &&
+                                setShowSuggestions(true)
+                            }
                             placeholder="Tomato, Eggs, Garlic..."
                             className="border-outline-variant w-full rounded-xl border bg-white py-5 pr-36 pl-14 text-base shadow-sm transition-all outline-none focus:border-primary focus:ring-2 focus:ring-primary"
                         />
@@ -133,8 +186,51 @@ export default function HeroSection() {
                                 Find Recipes
                             </button>
                         </div>
+
+                        {/* Suggestions Dropdown */}
+                        {showSuggestions && (
+                            <div className="border-outline-variant absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-y-auto rounded-xl border bg-white shadow-lg ">
+                                {isLoadingSuggestions ? (
+                                    <div className="text-on-surface-variant px-4 py-8 text-center">
+                                        <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                                    </div>
+                                ) : suggestions.length > 0 ? (
+                                    <div className="divide-outline-variant divide-y">
+                                        {suggestions.map((suggestion) => (
+                                            <button
+                                                key={suggestion.id}
+                                                onClick={() =>
+                                                    handleSuggestionClick(
+                                                        suggestion,
+                                                    )
+                                                }
+                                                className="hover:bg-secondary-100 flex w-full items-center gap-3 px-4 py-3 text-left transition-colors cursor-pointer"
+                                            >
+                                                <img
+                                                    src={suggestion.image}
+                                                    alt={suggestion.title}
+                                                    className="h-10 w-10 rounded object-cover"
+                                                />
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="text-on-surface truncate font-medium">
+                                                        {suggestion.title}
+                                                    </div>
+                                                    <div className="text-on-surface-variant truncate text-xs">
+                                                        {suggestion.description}
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-on-surface-variant px-4 py-8 text-center text-sm">
+                                        No recipes found
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
-                    <div className="mt-4 flex flex-wrap justify-center gap-2">
+                    <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                         <span className="text-outline text-xs font-medium tracking-wider uppercase">
                             Try:
                         </span>
@@ -147,6 +243,7 @@ export default function HeroSection() {
                                 key={tag}
                                 onClick={() => {
                                     setQuery(tag);
+                                    router.get('/recipes', { search: tag });
                                 }}
                                 className="bg-secondary-container text-on-secondary-container rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80"
                             >

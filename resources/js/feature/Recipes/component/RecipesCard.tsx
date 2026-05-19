@@ -1,19 +1,30 @@
 'use client';
 
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import gsap from 'gsap';
-import { Clock, Heart } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { Clock, Heart, CheckCircle } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import type { Recipe } from '@/data/recipe-data';
 
 interface RecipeCardProps {
     recipe: Recipe;
     index?: number;
+    onBookmarkChange?: (recipeId: string, isBookmarked: boolean) => void;
 }
 
-export function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
+export function RecipeCard({
+    recipe,
+    index = 0,
+    onBookmarkChange,
+}: RecipeCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLDivElement>(null);
+    const { auth } = usePage().props as any;
+    const [isBookmarked, setIsBookmarked] = useState(
+        (recipe as any).isBookmarked || false,
+    );
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (!cardRef.current) {
@@ -79,6 +90,64 @@ export function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
         });
     };
 
+    const handleBookmarkClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Check if user is authenticated
+        if (!auth.user) {
+            toast.error('Silakan login terlebih dahulu untuk bookmark recipe');
+            return;
+        }
+
+        setIsLoading(true);
+
+        if (isBookmarked) {
+            // Delete bookmark
+            fetch(`/api/bookmarks/${recipe.id}`, {
+                method: 'DELETE',
+            })
+                .then(() => {
+                    setIsBookmarked(false);
+                    toast.success('Bookmark dihapus');
+                    onBookmarkChange?.(recipe.id, false);
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    toast.error('Gagal menghapus bookmark');
+                    setIsLoading(false);
+                });
+        } else {
+            // Create bookmark
+            fetch('/api/bookmarks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ recipe_id: recipe.id }),
+            })
+                .then((response) => {
+                    if (response.status === 409) {
+                        setIsBookmarked(true);
+                        toast.info('Recipe sudah ada di bookmark');
+                        setIsLoading(false);
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('Failed to create bookmark');
+                    }
+                    setIsBookmarked(true);
+                    toast.success('Recipe ditambahkan ke bookmark');
+                    onBookmarkChange?.(recipe.id, true);
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    toast.error('Gagal menambahkan bookmark');
+                    setIsLoading(false);
+                });
+        }
+    };
+
     return (
         <Link href={`/recipes/${recipe.id}`}>
             <div
@@ -99,10 +168,15 @@ export function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
 
                     {/* Save Button */}
                     <button
-                        onClick={(e) => e.preventDefault()}
-                        className="absolute top-3 right-3 rounded-full bg-white/90 p-2 backdrop-blur-sm transition-colors hover:bg-white"
+                        onClick={handleBookmarkClick}
+                        disabled={isLoading}
+                        className="absolute top-3 right-3 rounded-full bg-white/90 p-2 backdrop-blur-sm transition-colors hover:bg-white disabled:opacity-50"
                     >
-                        <Heart className="h-5 w-5 text-muted-foreground hover:text-destructive" />
+                        {isBookmarked ? (
+                            <CheckCircle className="h-5 w-5 text-green-500" />
+                        ) : (
+                            <Heart className="h-5 w-5 text-muted-foreground hover:text-destructive" />
+                        )}
                     </button>
 
                     {/* Label Badge */}
