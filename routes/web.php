@@ -8,6 +8,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\Settings\ProfileController as SettingsProfileController;
+use App\Http\Controllers\AuthController;
 
 // Homepage
 Route::inertia('/', 'welcome', [
@@ -18,8 +19,18 @@ Route::inertia('/', 'welcome', [
 Route::inertia('/design-system', 'design-system')->name('design-system');
 
 // Auth
-Route::inertia('/login', 'auth/login')->name('login');
-Route::inertia('/register', 'auth/register')->name('register');
+// Auth
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.store');
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.store');
 
 // Recipes
 // routes/web.php
@@ -35,8 +46,11 @@ Route::delete('/bookmarks/{recipe_id}', [BookmarkController::class, 'destroy'])-
 Route::get('/profile', [SettingsProfileController::class, 'show'])->name('profile.show');
 
 // History
-Route::get('/history', [HistoryController::class, 'index'])->name('history.index')->withoutMiddleware('auth');
 Route::middleware('auth')->group(function () {
+    Route::get('/history', [HistoryController::class, 'index'])
+        ->name('history.index');
+    Route::delete('/history/clear', [HistoryController::class, 'clear'])
+    ->name('history.clear');
 });
 
 // Dashboard (team-based)
