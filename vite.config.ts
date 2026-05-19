@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
+const isDocker = process.env.DOCKER_BUILD === 'true';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -18,8 +20,14 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
-    ],
+        // Hanya load wayfinder kalau bukan Docker build
+        ...(isDocker ? [] : [wayfinder({ formVariants: true })]),
+    ].filter(Boolean),
+     server: {
+        host: '0.0.0.0',
+        port: 5173,
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });

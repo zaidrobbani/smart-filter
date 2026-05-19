@@ -1,0 +1,82 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-filter-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8000:80"
+    environment:
+      APP_NAME: "Smart Filter"
+      APP_ENV: local
+      APP_KEY: "base64:6XAs3W5CSD37/7QV9bSKc4ecuOKRMNci7zThqCXgX4I="
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:8000"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: smart_filter
+      DB_USERNAME: smart_filter
+      DB_PASSWORD: smart_filter
+    volumes:
+      - ./:/var/www/html
+      - vendor_data:/var/www/html/vendor
+      - node_modules:/var/www/html/node_modules
+    restart: unless-stopped
+
+  vite:
+    image: node:20
+    container_name: smart-filter-vite
+    working_dir: /var/www/html
+    environment:
+      DOCKER_BUILD: "true"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/var/www/html
+      - node_modules:/var/www/html/node_modules
+      - vendor_data:/var/www/html/vendor 
+    command: sh -c "npm install && npm run dev -- --host"
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: smart-filter-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "33060:3306"
+    environment:
+      MYSQL_DATABASE: smart_filter
+      MYSQL_USER: smart_filter
+      MYSQL_PASSWORD: smart_filter
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "smart_filter", "-psmart_filter"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: smart-filter-phpmyadmin
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: smart_filter
+      PMA_PASSWORD: smart_filter
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  vendor_data:
+  node_modules:
