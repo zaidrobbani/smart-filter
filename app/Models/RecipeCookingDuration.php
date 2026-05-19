@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property-read \App\Models\Recipe|null $recipe
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeCookingDuration newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeCookingDuration newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeCookingDuration query()
+ * @mixin \Eloquent
+ */
 class RecipeCookingDuration extends Model
 {
     public $timestamps = false;

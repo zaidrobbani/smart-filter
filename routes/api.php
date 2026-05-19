@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\RecipeController;
-
+use app\Http\Controllers\HistoryController;
 // ─── AUTH (public) ───────────────────────────────────────────────────────────
 Route::post('/register',        [AuthController::class, 'register']);
 Route::post('/login',           [AuthController::class, 'login']);
@@ -28,6 +28,7 @@ Route::post('/reset-password',  [AuthController::class, 'resetPassword']);
 //   ?ingredients=13,14,25   filter resep yang bisa dibuat dari bahan ini
 //   ?lang=id                bahasa label: id (default) atau en
 //
+Route::get('/recipes/search/suggestions', [RecipeController::class, 'suggestions']);
 Route::get('/recipes',          [RecipeController::class, 'index']);
 Route::get('/recipes/{id}',     [RecipeController::class, 'show']);  // detail (saat gambar ditekan)
 Route::get('/filter-options',   [RecipeController::class, 'filterOptions']);
@@ -47,9 +48,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bookmarks',                  [BookmarkController::class, 'store']);
     Route::delete('/bookmarks/{recipe_id}',    [BookmarkController::class, 'destroy']);
 
+    // History
+    Route::post('/history/record',             [HistoryController::class, 'record']);
+    Route::delete('/history/{id}',             [HistoryController::class, 'destroy']);
+
     // Debug / test token
     Route::get('/test-auth', fn () => response()->json([
         'message' => 'AUTHORIZED',
-        'user'    => auth()->user(),
+        'user'    => auth('sanctum')->user(),
     ]));
 });
