@@ -2,7 +2,7 @@
 
 import { router, usePage } from '@inertiajs/react';
 import gsap from 'gsap';
-import { Camera, Loader2 } from 'lucide-react';
+import { Camera, Loader2, UserCircle2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
@@ -26,50 +26,79 @@ interface PageProps {
     };
 }
 
+function AvatarImage({
+    src,
+    alt,
+    className,
+}: {
+    src: string | null;
+    alt: string;
+    className?: string;
+}) {
+    const [errored, setErrored] = useState(false);
+
+    if (!src || errored) {
+        return <UserCircle2 className={className} strokeWidth={1} />;
+    }
+
+    return (
+        <img
+            src={src}
+            alt={alt}
+            className={className}
+            onError={() => setErrored(true)}
+        />
+    );
+}
+
 export default function ProfilePage() {
     const { user: userData, toast } = usePage().props as PageProps;
     const [isEditMode, setIsEditMode] = useState(false);
     const [is2FAEnabled, setIs2FAEnabled] = useState(false);
-    const [profileImage, setProfileImage] = useState(
-        userData?.avatar || 'https://via.placeholder.com/96x96?text=Profile',
-    );
+
+    // previewUrl is only set when user picks a new image file locally
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [toastMessage, setToastMessage] = useState<{
         type: 'success' | 'error';
         message: string;
     } | null>(null);
-    const [imageFile, setImageFile] = useState<File | null>(null); // ✅ Fix: state imageFile yang hilang
+    const [imageFile, setImageFile] = useState<File | null>(null);
 
     const {
         register,
         handleSubmit,
         reset,
-        control, // ✅ Fix: tambah control dari useForm
+        control,
         formState: { isDirty, errors },
     } = useForm<ProfileFormData>({
         defaultValues: {
-            name: userData?.name || 'User Name',
-            email: userData?.email || 'user@example.com',
+            name: userData?.name || '',
+            email: userData?.email || '',
         },
     });
 
-    // ✅ Fix: useWatch pakai { control, name } bukan string langsung
     const watchName = useWatch({ control, name: 'name' });
     const watchEmail = useWatch({ control, name: 'email' });
 
     const sectionRef = useRef<HTMLDivElement>(null);
     const personalInfoRef = useRef<HTMLDivElement>(null);
     const securityRef = useRef<HTMLDivElement>(null);
-    const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null); // ✅ Fix: ganti NodeJS.Timeout
+    const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Show page toast if available
+    const showToast = (type: 'success' | 'error', message: string) => {
+        if (toastTimeoutRef.current) {
+            clearTimeout(toastTimeoutRef.current);
+        }
+
+        setToastMessage({ type, message });
+        toastTimeoutRef.current = setTimeout(() => setToastMessage(null), 5000);
+    };
+
     useEffect(() => {
         if (toast) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
-            setToastMessage(toast);
-            toastTimeoutRef.current = setTimeout(() => {
-                setToastMessage(null);
-            }, 5000);
+            showToast(toast.type, toast.message);
         }
 
         return () => {
@@ -103,43 +132,40 @@ export default function ProfilePage() {
         return () => ctx.revert();
     }, []);
 
+    const resetEditState = () => {
+        reset();
+        setPreviewUrl(null);
+        setImageFile(null);
+        setIsEditMode(false);
+    };
+
     const onSubmit = (data: ProfileFormData) => {
         setIsLoading(true);
 
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('email', data.email);
+        formData.append('_method', 'PATCH');
 
         if (imageFile) {
             formData.append('avatar', imageFile);
         }
 
-        formData.append('_method', 'PATCH');
-
         router.post('/settings/profile', formData, {
+            forceFormData: true,
             onSuccess: () => {
                 setIsLoading(false);
                 setIsEditMode(false);
                 setImageFile(null);
+                setPreviewUrl(null);
                 reset(data);
-                setToastMessage({
-                    type: 'success',
-                    message: 'Profile updated successfully!',
-                });
-                toastTimeoutRef.current = setTimeout(
-                    () => setToastMessage(null),
-                    5000,
-                );
+                showToast('success', 'Profile updated successfully!');
             },
             onError: () => {
                 setIsLoading(false);
-                setToastMessage({
-                    type: 'error',
-                    message: 'Failed to update profile. Please try again.',
-                });
-                toastTimeoutRef.current = setTimeout(
-                    () => setToastMessage(null),
-                    5000,
+                showToast(
+                    'error',
+                    'Failed to update profile. Please try again.',
                 );
             },
         });
@@ -148,28 +174,33 @@ export default function ProfilePage() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
-        if (file) {
-            setImageFile(file);
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const result = event.target?.result;
-
-                if (typeof result === 'string') {
-                    setProfileImage(result);
-                }
-            };
-            reader.readAsDataURL(file);
+        if (!file) {
+            return;
         }
+
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const result = event.target?.result;
+
+            if (typeof result === 'string') {
+                setPreviewUrl(result);
+            }
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleToggle2FA = () => {
-        setIs2FAEnabled(!is2FAEnabled);
+        setIs2FAEnabled((prev) => !prev);
         gsap.to('[data-toggle-indicator]', {
             x: is2FAEnabled ? 0 : 20,
             duration: 0.3,
             ease: 'power2.out',
         });
     };
+
+    // What to show in the avatar: local preview > server URL > null (fallback icon)
+    const displayedAvatar = previewUrl ?? userData?.avatar ?? null;
 
     return (
         <div
@@ -209,17 +240,12 @@ export default function ProfilePage() {
                         <button
                             onClick={() => {
                                 if (isEditMode) {
-                                    reset();
-                                    setProfileImage(
-                                        userData?.avatar ||
-                                            'https://via.placeholder.com/96x96?text=Profile',
-                                    );
-                                    setImageFile(null);
+                                    resetEditState();
+                                } else {
+                                    setIsEditMode(true);
                                 }
-
-                                setIsEditMode(!isEditMode);
                             }}
-                            className={`rounded-lg px-4 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors duration-300 cursor-pointer ${
+                            className={`cursor-pointer rounded-lg px-4 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors duration-300 ${
                                 isEditMode
                                     ? 'bg-primary-600 text-white hover:bg-primary-700'
                                     : 'hover:bg-primary-50 text-primary-600'
@@ -232,10 +258,10 @@ export default function ProfilePage() {
                     {/* Profile Section */}
                     <div className="mb-10 flex flex-col items-start gap-6 md:flex-row md:items-center">
                         <div className="group relative">
-                            <img
-                                src={profileImage}
+                            <AvatarImage
+                                src={displayedAvatar}
                                 alt="Profile"
-                                className="h-24 w-24 rounded-full border-4 border-primary-500 object-cover shadow-md"
+                                className="h-24 w-24 rounded-full border-4 border-primary-500 object-cover text-primary-300 shadow-md"
                             />
                             {isEditMode && (
                                 <>
@@ -256,12 +282,11 @@ export default function ProfilePage() {
                             )}
                         </div>
                         <div>
-                            {/* ✅ Fix: pakai watchName & watchEmail yang sudah benar */}
                             <p className="font-serif text-xl font-semibold text-neutral-800">
-                                {watchName}
+                                {watchName || userData?.name}
                             </p>
                             <p className="text-sm text-neutral-600">
-                                {watchEmail}
+                                {watchEmail || userData?.email}
                             </p>
                         </div>
                     </div>
@@ -334,28 +359,20 @@ export default function ProfilePage() {
                         </div>
 
                         {/* Save Changes Button */}
-                        {isEditMode && isDirty && (
+                        {isEditMode && (isDirty || imageFile) && (
                             <div className="flex justify-end gap-4 pt-4">
                                 <button
                                     type="button"
-                                    onClick={() => {
-                                        reset();
-                                        setIsEditMode(false);
-                                        setProfileImage(
-                                            userData?.avatar ||
-                                                'https://via.placeholder.com/96x96?text=Profile',
-                                        );
-                                        setImageFile(null);
-                                    }}
+                                    onClick={resetEditState}
                                     disabled={isLoading}
-                                    className="rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50 cursor-pointer"
+                                    className="cursor-pointer rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="flex items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50 cursor-pointer"
+                                    className="flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50"
                                 >
                                     {isLoading && (
                                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -387,7 +404,7 @@ export default function ProfilePage() {
                                     Last changed 4 months ago
                                 </p>
                             </div>
-                            <button className="hover:bg-primary-50 rounded-lg border-2 border-primary-600 px-6 py-2 text-xs font-semibold tracking-wider text-primary-600 uppercase transition-colors duration-300">
+                            <button className="hover:bg-primary-50 cursor-pointer rounded-lg border-2 border-primary-600 px-6 py-2 text-xs font-semibold tracking-wider text-primary-600 uppercase transition-colors duration-300">
                                 Update
                             </button>
                         </div>
@@ -405,7 +422,7 @@ export default function ProfilePage() {
                             </div>
                             <button
                                 onClick={handleToggle2FA}
-                                className={`relative h-8 w-14 rounded-full transition-all duration-300 ${
+                                className={`relative h-8 w-14 cursor-pointer rounded-full transition-all duration-300 ${
                                     is2FAEnabled
                                         ? 'bg-primary-600'
                                         : 'bg-neutral-300'
@@ -434,7 +451,7 @@ export default function ProfilePage() {
                             </div>
                             <button
                                 onClick={() => router.post('/logout')}
-                                className="rounded-lg border-2 border-red-500 px-6 py-2 text-xs font-semibold tracking-wider text-red-500 uppercase transition-colors duration-300 hover:bg-red-50 cursor-pointer"
+                                className="cursor-pointer rounded-lg border-2 border-red-500 px-6 py-2 text-xs font-semibold tracking-wider text-red-500 uppercase transition-colors duration-300 hover:bg-red-50"
                             >
                                 Logout
                             </button>

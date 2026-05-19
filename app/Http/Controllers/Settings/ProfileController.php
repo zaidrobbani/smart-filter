@@ -16,20 +16,49 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     /**
+     * Resolve the full public URL for an avatar value.
+     * - null / empty  → null (frontend akan pakai fallback)
+     * - starts with http → sudah berupa URL lengkap (dicebear, google, dll)
+     * - anything else → path relatif di disk public → generate storage URL
+     */
+    private function resolveAvatarUrl(?string $avatar): ?string
+    {
+        if (! $avatar) {
+            return null;
+        }
+
+        if (str_starts_with($avatar, 'http://') || str_starts_with($avatar, 'https://')) {
+            return $avatar;
+        }
+
+        return asset('storage/' . $avatar);
+    }
+
+    /**
+     * Build the user array that is shared to Inertia.
+     */
+    private function userPayload(Request $request): array
+    {
+        $user = $request->user();
+
+        return [
+            'id'       => $user->id,
+            'name'     => $user->username,
+            'email'    => $user->email,
+            'avatar'   => $this->resolveAvatarUrl($user->avatar),
+            'username' => $user->username,
+        ];
+    }
+
+    /**
      * Show the user's profile settings page.
      */
     public function show(Request $request): Response
     {
         return Inertia::render('settings/profile', [
-            'user' => [
-                'id' => $request->user()->id,
-                'name' => $request->user()->username,
-                'email' => $request->user()->email,
-                'avatar' => $request->user()->avatar,
-                'username' => $request->user()->username,
-            ],
+            'user'            => $this->userPayload($request),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => $request->session()->get('status'),
+            'status'          => $request->session()->get('status'),
         ]);
     }
 
@@ -50,12 +79,13 @@ class ProfileController extends Controller
 
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($request->user()->avatar) {
-                Storage::disk('public')->delete($request->user()->avatar);
+            // Delete old avatar if it is a locally stored file (not an external URL)
+            $oldAvatar = $request->user()->avatar;
+            if ($oldAvatar && ! str_starts_with($oldAvatar, 'http')) {
+                Storage::disk('public')->delete($oldAvatar);
             }
 
-            // Store new avatar
+            // Store new avatar and save only the relative path in DB
             $path = $request->file('avatar')->store('avatars', 'public');
             $validated['avatar'] = $path;
         }

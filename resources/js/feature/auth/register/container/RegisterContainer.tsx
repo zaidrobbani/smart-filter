@@ -1,7 +1,6 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import gsap from 'gsap';
 import { useEffect, useRef } from 'react';
-import { route } from 'ziggy-js';
 
 export default function Register() {
     const { data, setData, post, processing, errors } = useForm({
