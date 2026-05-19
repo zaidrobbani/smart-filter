@@ -4,106 +4,93 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-    // REGISTER
+    public function showRegister()
+    {
+        return Inertia::render('Auth/Register');
+    }
+
     public function register(Request $request)
     {
-        // validation
         $request->validate([
             'username' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed'
         ]);
 
-        // create user
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
-
-            // HASH PASSWORD
             'password' => Hash::make($request->password)
         ]);
 
-        return response()->json([
-            'message' => 'Register success',
-            'data' => $user
-        ], 201);
+        Auth::login($user);
+
+        return redirect()->route('dashboard');
     }
 
+    public function showLogin()
+    {
+        return Inertia::render('Auth/Login');
+    }
 
-    // LOGIN
     public function login(Request $request)
     {
-        // validation
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        // cari user berdasarkan email
-        $user = User::where('email', $request->email)->first();
-
-        // cek user & password
-        if (!$user || !Hash::check($request->password, $user->password)) {
-
-            return response()->json([
-                'message' => 'Invalid email or password'
-            ], 401);
-        }
-
-        // generate token sanctum
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login success',
-            'token' => $token,
-            'data' => $user
-        ]);
-    }
-
-
-    // LOGOUT
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'message' => 'Logout success'
-        ]);
-    }
-
-
-    // FORGOT PASSWORD
-    public function forgotPassword(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email'
-        ]);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($status === Password::RESET_LINK_SENT) {
-
-            return response()->json([
-                'message' => 'Reset link sent successfully'
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors([
+                'email' => 'Email atau password salah'
             ]);
         }
 
-        return response()->json([
-            'message' => 'Unable to send reset link'
-        ], 400);
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('dashboard'));
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    // RESET PASSWORD
+        return redirect()->route('home');
+    }
+
+    public function showForgotPassword()
+    {
+        return Inertia::render('Auth/ForgotPassword');
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        Password::sendResetLink($request->only('email'));
+
+        return back()->with('status', 'Link reset password sudah dikirim ke email kamu');
+    }
+
+    public function showResetPassword(Request $request, $token)
+    {
+        return Inertia::render('Auth/ResetPassword', [
+            'token' => $token,
+            'email' => $request->email
+        ]);
+    }
+
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -113,62 +100,35 @@ class AuthController extends Controller
         ]);
 
         $status = Password::reset(
-            $request->only(
-                'email',
-                'password',
-                'password_confirmation',
-                'token'
-            ),
-
+            $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->save();
-
-                $user->setRememberToken(
-                    Str::random(60)
-                );
+                $user->setRememberToken(Str::random(60));
             }
         );
 
         if ($status === Password::PASSWORD_RESET) {
-
-            return response()->json([
-                'message' => 'Password reset successful'
-            ]);
+            return redirect()->route('login')->with('status', 'Password berhasil direset');
         }
 
-        return response()->json([
-            'message' => 'Invalid token'
-        ], 400);
+        return back()->withErrors(['email' => 'Token tidak valid']);
     }
 
-
-    // REDIRECT TO GOOGLE
+    // Google OAuth — tetap redirect biasa, tidak perlu page Inertia
     public function googleRedirect()
     {
-        return Socialite::driver('google')
-            ->stateless()
-            ->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
-
-    // GOOGLE CALLBACK
     public function googleCallback()
     {
-        $googleUser = Socialite::driver('google')
-            ->stateless()
-            ->user();
+        $googleUser = Socialite::driver('google')->user();
 
-        // cek apakah user sudah ada
-        $user = User::where('email', $googleUser->email)
-            ->first();
+        $user = User::where('email', $googleUser->email)->first();
 
-        // kalau belum ada -> create user
         if (!$user) {
-
-            // create user baru
             $user = User::create([
                 'username' => $googleUser->name,
                 'email' => $googleUser->email,
@@ -177,21 +137,14 @@ class AuthController extends Controller
                 'password' => bcrypt(Str::random(16))
             ]);
         } else {
-
-            // update data google user lama
             $user->update([
                 'google_id' => $googleUser->id,
                 'avatar' => $googleUser->avatar
             ]);
         }
 
-        // generate sanctum token
-        $token = $user->createToken('auth_token')->plainTextToken;
+        Auth::login($user);
 
-        return response()->json([
-            'message' => 'Google login success',
-            'token' => $token,
-            'data' => $user
-        ]);
+        return redirect()->route('dashboard');
     }
 }

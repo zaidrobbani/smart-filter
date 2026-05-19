@@ -3,16 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bookmark extends Model
 {
-    protected $table = 'bookmarks';
+    protected $fillable = ['user_id', 'recipe_id', 'saved_at'];
 
-    public $timestamps = false;
+    public function recipe(): BelongsTo
+    {
+        return $this->belongsTo(Recipe::class);
+    }
 
-    protected $fillable = [
-        'user_id',
-        'recipe_id',
-        'saved_at'
-    ];
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
