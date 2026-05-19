@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\RecipeHistory;
 
 class RecipeController extends Controller
 {
@@ -359,7 +361,11 @@ class RecipeController extends Controller
 
     public function index()
     {
-        return Inertia::render('recipes/index');
+        $recipes = $this->getRecipeData();
+
+        return Inertia::render('Recipes/index', [
+            'recipes' => $recipes,
+        ]);
     }
 
     public function show($id)
@@ -371,7 +377,19 @@ class RecipeController extends Controller
             abort(404, 'Recipe not found');
         }
 
-        return Inertia::render('recipes/show', [
+        if (Auth::check()) {
+            RecipeHistory::updateOrCreate(
+                [
+                    'user_id' => Auth::id(),
+                    'recipe_id' => $recipe['id'],
+                ],
+                [
+                    'viewed_at' => now(),
+                ]
+            );
+        }
+
+        return Inertia::render('Recipes/show', [
             'recipe' => $recipe,
         ]);
     }

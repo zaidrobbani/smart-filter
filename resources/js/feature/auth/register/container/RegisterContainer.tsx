@@ -72,7 +72,7 @@ export default function Register() {
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         gsap.fromTo(fieldsRef.current, { x: -6 }, { x: 0, duration: 0.4, ease: 'elastic.out(1, 0.3)' });
-        post(route('register') as string);
+        post('/register');
     }
 
     const handleButtonHover = (e: React.MouseEvent<HTMLButtonElement>) => {

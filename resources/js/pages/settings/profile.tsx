@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { Camera } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { router } from '@inertiajs/react';
 
 interface ProfileFormData {
     fullName: string;
@@ -294,7 +295,26 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </div>
+                <div className="flex items-center justify-between py-6">
+    <div>
+        <p className="text-lg font-semibold text-neutral-800">
+            Logout Session
+        </p>
+
+        <p className="mt-1 text-sm text-neutral-600">
+            Securely sign out from your account
+        </p>
+    </div>
+
+    <button
+        onClick={() => router.post('/logout')}
+        className="rounded-lg border-2 border-red-500 px-6 py-2 text-xs font-semibold tracking-wider text-red-500 uppercase transition-colors duration-300 hover:bg-red-50"
+    >
+        Logout
+    </button>
+</div>
             </div>
+            
         </div>
     );
 }

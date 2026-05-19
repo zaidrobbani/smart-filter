@@ -17,4 +17,9 @@ class Recipe extends Model
     protected $casts = [
         'instructions' => 'array', // ← supaya otomatis decode JSON
     ];
+
+    public function histories()
+    {
+        return $this->hasMany(RecipeHistory::class);
+    }
 }
