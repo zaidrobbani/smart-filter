@@ -1,42 +1,55 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\RecipeController;
 
-// AUTH
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-
-
-// FORGOT PASSWORD
+// ─── AUTH (public) ───────────────────────────────────────────────────────────
+Route::post('/register',        [AuthController::class, 'register']);
+Route::post('/login',           [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/reset-password',  [AuthController::class, 'resetPassword']);
+
+// Google OAuth — aktifkan jika socialite sudah terpasang
+// Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect']);
+// Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
 
 
-// GOOGLE AUTH
-Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect']);
-Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
+// ─── RECIPES (public) ────────────────────────────────────────────────────────
+//
+// GET /recipes
+//   ?search=ayam            cari di nama resep / nama bahan (id/en/alias)
+//   ?meal_type=1            filter: 1=main 2=snack 3=dessert 4=beverage
+//   ?cooking_time=1         filter: 1=fast 2=medium 3=long
+//   ?texture=1              filter: 1=dry 2=soupy
+//   ?equipment=1            filter: 1=stove 2=airfryer 3=oven 4=blender …
+//   ?method=1               filter: 1=cooking 2=baking
+//   ?ingredients=13,14,25   filter resep yang bisa dibuat dari bahan ini
+//   ?lang=id                bahasa label: id (default) atau en
+//
+Route::get('/recipes',          [RecipeController::class, 'index']);
+Route::get('/recipes/{id}',     [RecipeController::class, 'show']);  // detail (saat gambar ditekan)
+Route::get('/filter-options',   [RecipeController::class, 'filterOptions']);
+
+// Pencarian dan substitusi bahan
+Route::get('/ingredients/search',                    [RecipeController::class, 'searchIngredients']);
+Route::get('/ingredients/{id}/substitutions',        [RecipeController::class, 'ingredientSubstitutions']);
 
 
-// PROTECTED ROUTES
-Route::middleware('auth:sanctum')->group(function () { 
+// ─── PROTECTED ───────────────────────────────────────────────────────────────
+Route::middleware('auth:sanctum')->group(function () {
 
-    // BOOKMARK
-    Route::post('/bookmarks', [BookmarkController::class, 'store']);
-    Route::get('/bookmarks', [BookmarkController::class, 'index']);
-    Route::delete('/bookmarks/{recipe_id}', [BookmarkController::class, 'destroy']);
-
-    // LOGOUT
     Route::post('/logout', [AuthController::class, 'logout']);
-});
 
+    // Bookmarks
+    Route::get('/bookmarks',                   [BookmarkController::class, 'index']);
+    Route::post('/bookmarks',                  [BookmarkController::class, 'store']);
+    Route::delete('/bookmarks/{recipe_id}',    [BookmarkController::class, 'destroy']);
 
-// TEST AUTH
-Route::middleware('auth:sanctum')->get('/test-auth', function () {
-
-    return response()->json([
+    // Debug / test token
+    Route::get('/test-auth', fn () => response()->json([
         'message' => 'AUTHORIZED',
-        'user' => auth()->user()
-    ]);
+        'user'    => auth()->user(),
+    ]));
 });
