@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('history.destroy');
     Route::delete('/history/clear', [HistoryController::class, 'clear'])
         ->name('history.clear');
+    Route::patch('/settings/password', [SettingsProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
 
 // Dashboard (team-based)

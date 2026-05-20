@@ -78,6 +78,58 @@ export default function ProfilePage() {
         },
     });
 
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+    const [passwordErrors, setPasswordErrors] = useState<
+        Record<string, string>
+    >({});
+
+    const {
+        register: registerPassword,
+        handleSubmit: handlePasswordSubmit,
+        reset: resetPassword,
+        formState: { errors: passwordFormErrors },
+    } = useForm<{
+        current_password: string;
+        password: string;
+        password_confirmation: string;
+    }>({
+        defaultValues: {
+            current_password: '',
+            password: '',
+            password_confirmation: '',
+        },
+    });
+
+    const handlePasswordUpdate = (data: {
+        current_password: string;
+        password: string;
+        password_confirmation: string;
+    }) => {
+        setIsPasswordLoading(true);
+        setPasswordErrors({});
+
+        router.patch(
+            '/settings/password',
+            {
+                current_password: data.current_password,
+                password: data.password,
+                password_confirmation: data.password_confirmation,
+            },
+            {
+                onSuccess: () => {
+                    setIsPasswordLoading(false);
+                    setIsPasswordModalOpen(false);
+                    resetPassword();
+                    showToast('success', 'Password updated successfully!');
+                },
+                onError: (errors) => {
+                    setIsPasswordLoading(false);
+                    setPasswordErrors(errors);
+                },
+            },
+        );
+    };
     const watchName = useWatch({ control, name: 'name' });
     const watchEmail = useWatch({ control, name: 'email' });
 
@@ -97,7 +149,6 @@ export default function ProfilePage() {
 
     useEffect(() => {
         if (toast) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             showToast(toast.type, toast.message);
         }
 
@@ -404,7 +455,10 @@ export default function ProfilePage() {
                                     Last changed 4 months ago
                                 </p>
                             </div>
-                            <button className="hover:bg-primary-50 cursor-pointer rounded-lg border-2 border-primary-600 px-6 py-2 text-xs font-semibold tracking-wider text-primary-600 uppercase transition-colors duration-300">
+                            <button
+                                onClick={() => setIsPasswordModalOpen(true)}
+                                className="hover:bg-primary-50 cursor-pointer rounded-lg border-2 border-primary-600 px-6 py-2 text-xs font-semibold tracking-wider text-primary-600 uppercase transition-colors duration-300"
+                            >
                                 Update
                             </button>
                         </div>
@@ -459,6 +513,140 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </div>
+            {/* Password Modal */}
+            {isPasswordModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                    <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-8 shadow-xl">
+                        <h3 className="mb-6 font-serif text-2xl font-semibold text-tertiary-600">
+                            Change Password
+                        </h3>
+
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handlePasswordSubmit(handlePasswordUpdate)(e);
+                            }}
+                            className="space-y-5"
+                        >
+                            {/* Current Password */}
+                            <div className="space-y-2">
+                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                    Current Password
+                                </label>
+                                <input
+                                    {...registerPassword('current_password', {
+                                        required:
+                                            'Current password is required',
+                                    })}
+                                    type="password"
+                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
+                                        passwordFormErrors.current_password ||
+                                        passwordErrors.current_password
+                                            ? 'border-red-500'
+                                            : 'border-neutral-300'
+                                    }`}
+                                />
+                                {(passwordFormErrors.current_password ||
+                                    passwordErrors.current_password) && (
+                                    <p className="text-xs text-red-500">
+                                        {passwordFormErrors.current_password
+                                            ?.message ||
+                                            passwordErrors.current_password}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* New Password */}
+                            <div className="space-y-2">
+                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                    New Password
+                                </label>
+                                <input
+                                    {...registerPassword('password', {
+                                        required: 'New password is required',
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                'Password must be at least 8 characters',
+                                        },
+                                    })}
+                                    type="password"
+                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
+                                        passwordFormErrors.password ||
+                                        passwordErrors.password
+                                            ? 'border-red-500'
+                                            : 'border-neutral-300'
+                                    }`}
+                                />
+                                {(passwordFormErrors.password ||
+                                    passwordErrors.password) && (
+                                    <p className="text-xs text-red-500">
+                                        {passwordFormErrors.password?.message ||
+                                            passwordErrors.password}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Confirm New Password */}
+                            <div className="space-y-2">
+                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                    Confirm New Password
+                                </label>
+                                <input
+                                    {...registerPassword(
+                                        'password_confirmation',
+                                        {
+                                            required:
+                                                'Please confirm your new password',
+                                        },
+                                    )}
+                                    type="password"
+                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
+                                        passwordFormErrors.password_confirmation ||
+                                        passwordErrors.password_confirmation
+                                            ? 'border-red-500'
+                                            : 'border-neutral-300'
+                                    }`}
+                                />
+                                {(passwordFormErrors.password_confirmation ||
+                                    passwordErrors.password_confirmation) && (
+                                    <p className="text-xs text-red-500">
+                                        {passwordFormErrors
+                                            .password_confirmation?.message ||
+                                            passwordErrors.password_confirmation}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex justify-end gap-4 pt-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsPasswordModalOpen(false);
+                                        resetPassword();
+                                        setPasswordErrors({});
+                                    }}
+                                    disabled={isPasswordLoading}
+                                    className="cursor-pointer rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isPasswordLoading}
+                                    className="flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50"
+                                >
+                                    {isPasswordLoading && (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    )}
+                                    Update Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
