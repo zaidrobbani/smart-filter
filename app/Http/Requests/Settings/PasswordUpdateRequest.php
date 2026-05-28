@@ -11,15 +11,22 @@ class PasswordUpdateRequest extends FormRequest
     use PasswordValidationRules;
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'current_password' => $this->currentPasswordRules(),
-            'password' => $this->passwordRules(),
+            'password'         => $this->passwordRules(),
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'current_password.current_password' => 'The current password is incorrect.',
+            'password.confirmed'                => 'The new password confirmation does not match.',
+            'password.min'                      => 'The new password must be at least 8 characters.',
         ];
     }
 }

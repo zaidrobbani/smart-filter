@@ -2,7 +2,7 @@
 
 namespace App\Actions\History;
 
-use App\Models\RecipeVisit;
+use App\Models\RecipeHistory;
 use Illuminate\Support\Facades\Auth;
 
 class RecordVisitAction
@@ -11,18 +11,15 @@ class RecordVisitAction
     {
         if (!Auth::check()) return; // skip kalau belum login
 
-        // Hindari duplikat dalam 1 jam terakhir
-        $recentVisit = RecipeVisit::where('user_id', Auth::id())
-            ->where('recipe_id', $recipeId)
-            ->where('visited_at', '>=', now()->subHour())
-            ->first();
-
-        if (!$recentVisit) {
-            RecipeVisit::create([
-                'user_id'    => Auth::id(),
-                'recipe_id'  => $recipeId,
-                'visited_at' => now(),
-            ]);
-        }
+        // Update atau create - jika sudah ada, hanya update viewed_at
+        RecipeHistory::updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'recipe_id' => $recipeId,
+            ],
+            [
+                'viewed_at' => now(),
+            ]
+        );
     }
 }

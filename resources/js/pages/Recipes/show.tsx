@@ -14,7 +14,7 @@ interface RecipeShowPageProps {
 }
 
 const show = ({ recipe }: RecipeShowPageProps) => {
-    return <RecipeDetilContainer id={recipe.id} />;
+    return <RecipeDetilContainer recipe={recipe} />;
 };
 
 export default show;
