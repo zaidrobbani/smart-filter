@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IngredientAlias> $aliases
+ * @property-read Collection<int, IngredientAlias> $aliases
  * @property-read int|null $aliases_count
- * @property-read \App\Models\Component|null $component
- * @property-read \App\Models\Ingredient|null $ingredient
+ * @property-read Component|null $component
+ * @property-read Ingredient|null $ingredient
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ComponentIngredient newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ComponentIngredient newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ComponentIngredient query()
+ *
  * @mixin \Eloquent
  */
 class ComponentIngredient extends Model

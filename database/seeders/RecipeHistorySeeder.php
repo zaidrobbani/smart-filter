@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Recipe;
 use App\Models\RecipeHistory;
 use App\Models\User;
-use App\Models\Recipe;
 use Illuminate\Database\Seeder;
 
 class RecipeHistorySeeder extends Seeder
@@ -17,7 +17,7 @@ class RecipeHistorySeeder extends Seeder
         $user = User::first();
         $recipes = Recipe::limit(5)->get();
 
-        if (!$user || $recipes->isEmpty()) {
+        if (! $user || $recipes->isEmpty()) {
             return;
         }
 

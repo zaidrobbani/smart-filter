@@ -3,7 +3,6 @@
 namespace App\Actions\Profile;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UpdateProfileAction
 {
@@ -11,14 +10,14 @@ class UpdateProfileAction
     {
         $updateData = [
             'username' => $data['username'],
-            'email'    => $data['email'],
+            'email' => $data['email'],
         ];
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $updateData['password'] = $data['password']; // model sudah cast hashed
         }
 
-        if (!empty($data['avatar'])) {
+        if (! empty($data['avatar'])) {
             $updateData['avatar'] = $data['avatar'];
         }
 

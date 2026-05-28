@@ -18,7 +18,7 @@ class CreateBookmarkAction
         }
 
         $bookmark = Bookmark::create([
-            'user_id'  => Auth::id(),
+            'user_id' => Auth::id(),
             'recipe_id' => $recipeId,
             'saved_at' => now(),
         ]);

@@ -17,7 +17,7 @@ class PasswordUpdateRequest extends FormRequest
     {
         return [
             'current_password' => $this->currentPasswordRules(),
-            'password'         => $this->passwordRules(),
+            'password' => $this->passwordRules(),
         ];
     }
 
@@ -25,8 +25,8 @@ class PasswordUpdateRequest extends FormRequest
     {
         return [
             'current_password.current_password' => 'The current password is incorrect.',
-            'password.confirmed'                => 'The new password confirmation does not match.',
-            'password.min'                      => 'The new password must be at least 8 characters.',
+            'password.confirmed' => 'The new password confirmation does not match.',
+            'password.min' => 'The new password must be at least 8 characters.',
         ];
     }
 }

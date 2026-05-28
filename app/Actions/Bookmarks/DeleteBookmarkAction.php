@@ -13,7 +13,7 @@ class DeleteBookmarkAction
             ->where('recipe_id', $recipeId)
             ->first();
 
-        if (!$bookmark) {
+        if (! $bookmark) {
             return ['status' => 'not_found', 'message' => 'Bookmark not found'];
         }
 

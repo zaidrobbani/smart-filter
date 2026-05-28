@@ -11,21 +11,21 @@ class RecipeSeeder extends Seeder
     {
         $recipes = [
             [
-                'id'             => 1,
-                'name'           => 'Shawarma Chicken',
-                'instructions'   => json_encode([
+                'id' => 1,
+                'name' => 'Shawarma Chicken',
+                'instructions' => json_encode([
                     'Campur semua bumbu marinasi dalam mangkuk besar',
                     'Lumuri ayam dengan marinasi, simpan di kulkas minimal 4 jam atau semalaman',
                     'Panggang di oven 200°C selama 30 menit atau air fryer 180°C 25 menit',
                     'Iris tipis ayam, sajikan dengan pita bread, sayuran segar, dan saus garlic',
                 ]),
                 'allergen_notes' => 'Contains: dairy (yogurt)',
-                'image_url'      => 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?q=80&w=2076&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?q=80&w=2076&auto=format&fit=crop',
             ],
             [
-                'id'             => 2,
-                'name'           => 'Cajun Chicken',
-                'instructions'   => json_encode([
+                'id' => 2,
+                'name' => 'Cajun Chicken',
+                'instructions' => json_encode([
                     'Campurkan cajun powder, paprika, garlic powder, garam, dan lada ke dalam mangkuk',
                     'Oleskan campuran bumbu merata ke seluruh permukaan ayam',
                     'Diamkan 30 menit di kulkas',
@@ -33,12 +33,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan coleslaw dan nasi atau kentang',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1615557960916-5f4791effe9d?q=80&w=1974&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1615557960916-5f4791effe9d?q=80&w=1974&auto=format&fit=crop',
             ],
             [
-                'id'             => 3,
-                'name'           => 'Ayam Bakar Taliwang',
-                'instructions'   => json_encode([
+                'id' => 3,
+                'name' => 'Ayam Bakar Taliwang',
+                'instructions' => json_encode([
                     'Haluskan bawang merah, bawang putih, cabai, tomat, dan terasi',
                     'Tumis bumbu halus dengan minyak hingga harum dan matang',
                     'Masukkan kecap manis, garam, dan gula merah, aduk rata',
@@ -46,12 +46,12 @@ class RecipeSeeder extends Seeder
                     'Bolak-balik dan olesi bumbu selama proses membakar',
                 ]),
                 'allergen_notes' => 'Contains: shrimp paste (terasi)',
-                'image_url'      => 'https://images.unsplash.com/photo-1588767768106-1b20e51d9d68?q=80&w=2070&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1588767768106-1b20e51d9d68?q=80&w=2070&auto=format&fit=crop',
             ],
             [
-                'id'             => 4,
-                'name'           => 'Rendang Sapi',
-                'instructions'   => json_encode([
+                'id' => 4,
+                'name' => 'Rendang Sapi',
+                'instructions' => json_encode([
                     'Haluskan semua bumbu: bawang merah, bawang putih, cabai, jahe, lengkuas, kunyit',
                     'Tumis bumbu halus, serai, daun jeruk, dan daun salam hingga harum',
                     'Masukkan daging sapi, aduk hingga daging berubah warna',
@@ -60,12 +60,12 @@ class RecipeSeeder extends Seeder
                     'Koreksi rasa, sajikan dengan nasi putih',
                 ]),
                 'allergen_notes' => 'Contains: tree nuts if using candlenut',
-                'image_url'      => 'https://images.unsplash.com/photo-1550367363-ea12860cc124?q=80&w=1035&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1550367363-ea12860cc124?q=80&w=1035&auto=format&fit=crop',
             ],
             [
-                'id'             => 5,
-                'name'           => 'Nasi Goreng Spesial',
-                'instructions'   => json_encode([
+                'id' => 5,
+                'name' => 'Nasi Goreng Spesial',
+                'instructions' => json_encode([
                     'Kocok telur dan buat orak-arik, sisihkan',
                     'Tumis bawang putih dan bawang merah hingga harum',
                     'Masukkan ayam atau udang, masak hingga matang',
@@ -74,12 +74,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan telur mata sapi, acar, dan kerupuk',
                 ]),
                 'allergen_notes' => 'Contains: egg, shellfish (optional)',
-                'image_url'      => 'https://images.unsplash.com/photo-1691322161487-0331fae404af?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1691322161487-0331fae404af?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 6,
-                'name'           => 'Sop Buntut',
-                'instructions'   => json_encode([
+                'id' => 6,
+                'name' => 'Sop Buntut',
+                'instructions' => json_encode([
                     'Rebus buntut sapi 1 jam, buang air pertama untuk mengurangi lemak',
                     'Tumis bawang putih, bawang bombay, dan rempah hingga harum',
                     'Masukkan buntut ke panci baru, tambah air dan bumbu tumis',
@@ -88,12 +88,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan panas dengan nasi, acar, dan emping',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1664741662725-bd131742b7b7?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1664741662725-bd131742b7b7?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 7,
-                'name'           => 'Gado-Gado Jakarta',
-                'instructions'   => json_encode([
+                'id' => 7,
+                'name' => 'Gado-Gado Jakarta',
+                'instructions' => json_encode([
                     'Rebus semua sayuran hingga matang namun masih segar: bayam, kol, tauge, kangkung',
                     'Goreng tahu dan tempe hingga keemasan',
                     'Buat saus kacang: haluskan kacang tanah goreng, cabai, bawang putih, tambah kecap, gula merah, dan air asam',
@@ -101,12 +101,12 @@ class RecipeSeeder extends Seeder
                     'Siramkan saus kacang, taburi bawang goreng dan kerupuk',
                 ]),
                 'allergen_notes' => 'Contains: peanut, gluten (kerupuk)',
-                'image_url'      => 'https://www.senibudayabetawi.com/wp-content/uploads/2022/06/gadogadok.jpg',
+                'image_url' => 'https://www.senibudayabetawi.com/wp-content/uploads/2022/06/gadogadok.jpg',
             ],
             [
-                'id'             => 8,
-                'name'           => 'Soto Ayam Lamongan',
-                'instructions'   => json_encode([
+                'id' => 8,
+                'name' => 'Soto Ayam Lamongan',
+                'instructions' => json_encode([
                     'Rebus ayam hingga matang, suwir-suwir dagingnya',
                     'Buat kaldu dari tulang ayam dengan tambahan jahe dan serai',
                     'Haluskan dan tumis bumbu: kunyit, bawang putih, bawang merah, kemiri',
@@ -114,12 +114,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan soun, telur rebus, koya, dan sambal',
                 ]),
                 'allergen_notes' => 'Contains: egg, gluten (koya)',
-                'image_url'      => 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 9,
-                'name'           => 'Ayam Geprek Sambal Bawang',
-                'instructions'   => json_encode([
+                'id' => 9,
+                'name' => 'Ayam Geprek Sambal Bawang',
+                'instructions' => json_encode([
                     'Campurkan tepung bumbu dengan air hingga adonan kental',
                     'Celupkan ayam ke adonan, goreng dalam minyak panas hingga krispi',
                     'Uleg cabai rawit, bawang putih goreng, dan garam kasar',
@@ -127,12 +127,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan nasi hangat dan lalapan',
                 ]),
                 'allergen_notes' => 'Contains: gluten (tepung)',
-                'image_url'      => 'https://images.unsplash.com/photo-1647724394693-2c93af726785?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1647724394693-2c93af726785?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 10,
-                'name'           => 'Ikan Bakar Jimbaran',
-                'instructions'   => json_encode([
+                'id' => 10,
+                'name' => 'Ikan Bakar Jimbaran',
+                'instructions' => json_encode([
                     'Bersihkan ikan, beri sayatan di badan ikan agar bumbu meresap',
                     'Haluskan bumbu Bali: cabai, bawang merah, bawang putih, kunyit, jahe, terasi',
                     'Lumuri ikan dengan bumbu, diamkan 1 jam di kulkas',
@@ -140,12 +140,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan plecing kangkung dan sambal matah',
                 ]),
                 'allergen_notes' => 'Contains: fish, shrimp paste',
-                'image_url'      => 'https://images.unsplash.com/photo-1600699899970-b1c9fadd8f9e?q=80&w=1374&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1600699899970-b1c9fadd8f9e?q=80&w=1374&auto=format&fit=crop',
             ],
             [
-                'id'             => 11,
-                'name'           => 'Beef Bulgogi',
-                'instructions'   => json_encode([
+                'id' => 11,
+                'name' => 'Beef Bulgogi',
+                'instructions' => json_encode([
                     'Iris daging sapi tipis-tipis melawan serat',
                     'Campurkan kecap asin, minyak wijen, bawang putih, jahe, gula, dan bawang bombay parut',
                     'Marinasi daging minimal 30 menit',
@@ -153,12 +153,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan di atas nasi dengan kimchi dan daun selada',
                 ]),
                 'allergen_notes' => 'Contains: soy (kecap asin), sesame',
-                'image_url'      => 'https://images.unsplash.com/photo-1604908177453-7462950a6a3b?q=80&w=1514&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1604908177453-7462950a6a3b?q=80&w=1514&auto=format&fit=crop',
             ],
             [
-                'id'             => 12,
-                'name'           => 'Mie Goreng Jawa',
-                'instructions'   => json_encode([
+                'id' => 12,
+                'name' => 'Mie Goreng Jawa',
+                'instructions' => json_encode([
                     'Rebus mie, tiriskan',
                     'Tumis bawang putih, bawang merah, dan cabai merah',
                     'Masukkan ayam atau udang, masak hingga matang',
@@ -167,12 +167,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan acar bawang dan kerupuk',
                 ]),
                 'allergen_notes' => 'Contains: egg, gluten, shellfish (optional)',
-                'image_url'      => 'https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=1384&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=1384&auto=format&fit=crop',
             ],
             [
-                'id'             => 13,
-                'name'           => 'Tongseng Kambing',
-                'instructions'   => json_encode([
+                'id' => 13,
+                'name' => 'Tongseng Kambing',
+                'instructions' => json_encode([
                     'Tumis bumbu halus: bawang putih, bawang merah, kemiri, kunyit, jahe, lengkuas',
                     'Masukkan daging kambing, aduk hingga berubah warna',
                     'Tambah air, serai, daun salam, dan daun jeruk',
@@ -181,12 +181,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan nasi putih dan kerupuk',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://img.magnific.com/premium-photo/tongseng-tongseng-kambing-indonesian-tradisional-food-made-from-goat-meat_583400-2266.jpg?w=1480',
+                'image_url' => 'https://img.magnific.com/premium-photo/tongseng-tongseng-kambing-indonesian-tradisional-food-made-from-goat-meat_583400-2266.jpg?w=1480',
             ],
             [
-                'id'             => 14,
-                'name'           => 'Pepes Ikan Mas',
-                'instructions'   => json_encode([
+                'id' => 14,
+                'name' => 'Pepes Ikan Mas',
+                'instructions' => json_encode([
                     'Haluskan bumbu: bawang merah, bawang putih, cabai, kunyit, jahe, kemiri',
                     'Campur ikan dengan bumbu, tambah daun kemangi dan daun salam',
                     'Bungkus dalam daun pisang, semat dengan lidi',
@@ -194,12 +194,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan nasi hangat',
                 ]),
                 'allergen_notes' => 'Contains: fish',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1693262738292-b53143561923?q=80&w=1471&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1693262738292-b53143561923?q=80&w=1471&auto=format&fit=crop',
             ],
             [
-                'id'             => 15,
-                'name'           => 'Pasta Aglio e Olio',
-                'instructions'   => json_encode([
+                'id' => 15,
+                'name' => 'Pasta Aglio e Olio',
+                'instructions' => json_encode([
                     'Rebus pasta hingga al dente, sisihkan 1 cangkir air rebusan pasta',
                     'Panaskan olive oil, tumis bawang putih iris hingga keemasan',
                     'Tambahkan cabai kering, italian herbs, dan sedikit air pasta',
@@ -207,12 +207,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan parmesan dan daun parsley',
                 ]),
                 'allergen_notes' => 'Contains: gluten (pasta)',
-                'image_url'      => 'https://images.unsplash.com/photo-1516685018646-549198525c1b?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1516685018646-549198525c1b?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 16,
-                'name'           => 'Chicken Teriyaki',
-                'instructions'   => json_encode([
+                'id' => 16,
+                'name' => 'Chicken Teriyaki',
+                'instructions' => json_encode([
                     'Campurkan kecap asin, madu, minyak wijen, dan bawang putih untuk saus teriyaki',
                     'Marinasi ayam 30 menit dalam saus',
                     'Panggang ayam di pan dengan sedikit minyak hingga matang',
@@ -220,12 +220,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan nasi kukus dan brokoli rebus',
                 ]),
                 'allergen_notes' => 'Contains: soy, sesame',
-                'image_url'      => 'https://images.unsplash.com/photo-1609183480237-ccbb2d7c5772?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1609183480237-ccbb2d7c5772?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 17,
-                'name'           => 'Udang Tumis Saus Tiram',
-                'instructions'   => json_encode([
+                'id' => 17,
+                'name' => 'Udang Tumis Saus Tiram',
+                'instructions' => json_encode([
                     'Kupas dan bersihkan udang, sisakan ekornya',
                     'Tumis bawang putih dan jahe hingga harum',
                     'Masukkan udang, masak hingga berubah warna',
@@ -234,12 +234,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan nasi putih',
                 ]),
                 'allergen_notes' => 'Contains: shellfish, soy',
-                'image_url'      => 'https://images.unsplash.com/photo-1674655491456-37cc7adeb2b0?q=80&w=1374&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1674655491456-37cc7adeb2b0?q=80&w=1374&auto=format&fit=crop',
             ],
             [
-                'id'             => 18,
-                'name'           => 'Gulai Tahu Tempe',
-                'instructions'   => json_encode([
+                'id' => 18,
+                'name' => 'Gulai Tahu Tempe',
+                'instructions' => json_encode([
                     'Goreng tahu dan tempe hingga keemasan, sisihkan',
                     'Tumis bumbu halus: bawang merah, bawang putih, cabai, kunyit, jahe',
                     'Tambahkan serai, daun salam, dan daun jeruk',
@@ -248,12 +248,12 @@ class RecipeSeeder extends Seeder
                     'Koreksi rasa dengan garam dan gula',
                 ]),
                 'allergen_notes' => 'Contains: soy (tahu, tempe)',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1712604940796-1a1dd9021bf1?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1712604940796-1a1dd9021bf1?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 19,
-                'name'           => 'Ayam Rica-Rica',
-                'instructions'   => json_encode([
+                'id' => 19,
+                'name' => 'Ayam Rica-Rica',
+                'instructions' => json_encode([
                     'Rebus ayam sebentar, potong sesuai selera',
                     'Haluskan cabai merah besar, cabai rawit, bawang merah, bawang putih, jahe',
                     'Tumis bumbu dengan serai dan daun jeruk hingga harum',
@@ -262,12 +262,12 @@ class RecipeSeeder extends Seeder
                     'Tambahkan daun kemangi, aduk sebentar dan sajikan',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1669742928112-19364a33b530?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1669742928112-19364a33b530?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 20,
-                'name'           => 'Sup Tom Yam Udang',
-                'instructions'   => json_encode([
+                'id' => 20,
+                'name' => 'Sup Tom Yam Udang',
+                'instructions' => json_encode([
                     'Rebus air, masukkan serai, daun jeruk, dan galangal',
                     'Tambahkan pasta tom yam, fish sauce, dan perasan jeruk nipis',
                     'Masukkan jamur dan udang, masak hingga udang matang',
@@ -275,12 +275,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan panas dengan taburan daun ketumbar',
                 ]),
                 'allergen_notes' => 'Contains: shellfish, fish',
-                'image_url'      => 'https://images.unsplash.com/photo-1571809839227-b2ac3d261257?q=80&w=1480&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1571809839227-b2ac3d261257?q=80&w=1480&auto=format&fit=crop',
             ],
             [
-                'id'             => 21,
-                'name'           => 'Tempe Mendoan',
-                'instructions'   => json_encode([
+                'id' => 21,
+                'name' => 'Tempe Mendoan',
+                'instructions' => json_encode([
                     'Iris tempe tipis-tipis',
                     'Buat adonan: tepung terigu, tepung beras, bawang putih, kunyit, ketumbar, garam, dan air',
                     'Celupkan tempe ke adonan hingga terlapisi tipis',
@@ -288,12 +288,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan cabai hijau dan kecap manis',
                 ]),
                 'allergen_notes' => 'Contains: gluten, soy',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1664647788826-73be5bf4d91c?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1664647788826-73be5bf4d91c?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 22,
-                'name'           => 'Kroket Kentang',
-                'instructions'   => json_encode([
+                'id' => 22,
+                'name' => 'Kroket Kentang',
+                'instructions' => json_encode([
                     'Rebus dan haluskan kentang, campur dengan garam, merica, dan butter',
                     'Isi dengan ragout ayam: tumis bawang, wortel, ayam, tepung, susu',
                     'Bentuk oval, celup ke kocokan telur, balut bread crumbs',
@@ -301,12 +301,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan saus sambal atau saus tomat',
                 ]),
                 'allergen_notes' => 'Contains: gluten, egg, dairy',
-                'image_url'      => 'https://images.unsplash.com/photo-1626011852881-4609127619a8?q=80&w=1035&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1626011852881-4609127619a8?q=80&w=1035&auto=format&fit=crop',
             ],
             [
-                'id'             => 23,
-                'name'           => 'Pisang Goreng Crispy',
-                'instructions'   => json_encode([
+                'id' => 23,
+                'name' => 'Pisang Goreng Crispy',
+                'instructions' => json_encode([
                     'Kupas pisang kepok, belah atau biarkan utuh',
                     'Buat adonan: tepung terigu, tepung beras, garam, vanilla, dan air dingin',
                     'Celupkan pisang ke adonan',
@@ -314,12 +314,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan saus coklat atau madu',
                 ]),
                 'allergen_notes' => 'Contains: gluten',
-                'image_url'      => 'https://images.unsplash.com/photo-1762941904142-9d91ca413e66?q=80&w=1035&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1762941904142-9d91ca413e66?q=80&w=1035&auto=format&fit=crop',
             ],
             [
-                'id'             => 24,
-                'name'           => 'Tahu Crispy Bumbu Balado',
-                'instructions'   => json_encode([
+                'id' => 24,
+                'name' => 'Tahu Crispy Bumbu Balado',
+                'instructions' => json_encode([
                     'Potong tahu kotak, goreng hingga keemasan, sisihkan',
                     'Haluskan cabai merah, bawang merah, bawang putih, tomat',
                     'Tumis bumbu halus dengan minyak hingga harum dan matang',
@@ -327,12 +327,12 @@ class RecipeSeeder extends Seeder
                     'Masukkan tahu, aduk hingga tahu terbalut bumbu balado',
                 ]),
                 'allergen_notes' => 'Contains: soy',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1695458468333-7f251ba26170?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1695458468333-7f251ba26170?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 25,
-                'name'           => 'Risoles Mayo',
-                'instructions'   => json_encode([
+                'id' => 25,
+                'name' => 'Risoles Mayo',
+                'instructions' => json_encode([
                     'Buat kulit dadar tipis dari tepung, telur, dan susu',
                     'Buat isian: telur rebus, mayonaise, wortel, sosis',
                     'Isi kulit dadar, gulung rapat',
@@ -340,12 +340,12 @@ class RecipeSeeder extends Seeder
                     'Goreng hingga keemasan, sajikan hangat',
                 ]),
                 'allergen_notes' => 'Contains: egg, gluten, dairy',
-                'image_url'      => 'https://images.unsplash.com/photo-1596069080556-867fc4c4d297?q=80&w=1452&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1596069080556-867fc4c4d297?q=80&w=1452&auto=format&fit=crop',
             ],
             [
-                'id'             => 26,
-                'name'           => 'Bakwan Jagung',
-                'instructions'   => json_encode([
+                'id' => 26,
+                'name' => 'Bakwan Jagung',
+                'instructions' => json_encode([
                     'Campur jagung pipil, tepung terigu, telur, bawang putih, bawang merah, daun bawang',
                     'Tambahkan garam, merica, dan sedikit air hingga adonan kental',
                     'Goreng sendok per sendok dalam minyak panas',
@@ -353,12 +353,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan cabai hijau',
                 ]),
                 'allergen_notes' => 'Contains: gluten, egg',
-                'image_url'      => 'https://images.unsplash.com/photo-1683533678036-46ec6a0163d9?q=80&w=1469&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1683533678036-46ec6a0163d9?q=80&w=1469&auto=format&fit=crop',
             ],
             [
-                'id'             => 27,
-                'name'           => 'Onigiri Tuna',
-                'instructions'   => json_encode([
+                'id' => 27,
+                'name' => 'Onigiri Tuna',
+                'instructions' => json_encode([
                     'Masak nasi, biarkan sedikit panas',
                     'Campur tuna kaleng tiriskan dengan mayonaise, sedikit kecap asin',
                     'Ambil nasi, pipihkan di tangan, taruh isian tuna di tengah',
@@ -366,12 +366,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan segera atau simpan dalam wadah tertutup',
                 ]),
                 'allergen_notes' => 'Contains: fish, soy',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1695399565325-232854c00fbf?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1695399565325-232854c00fbf?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 28,
-                'name'           => 'Donat Kentang',
-                'instructions'   => json_encode([
+                'id' => 28,
+                'name' => 'Donat Kentang',
+                'instructions' => json_encode([
                     'Rebus dan haluskan kentang, campur dengan tepung, ragi, gula, telur, butter, dan garam',
                     'Uleni hingga kalis, istirahatkan 1 jam hingga mengembang',
                     'Cetak bentuk donat, istirahatkan 30 menit lagi',
@@ -379,12 +379,12 @@ class RecipeSeeder extends Seeder
                     'Lapisi dengan gula halus atau coklat leleh',
                 ]),
                 'allergen_notes' => 'Contains: gluten, egg, dairy',
-                'image_url'      => 'https://images.unsplash.com/photo-1618411640018-972400a01458?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1618411640018-972400a01458?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 29,
-                'name'           => 'Spring Roll Sayuran',
-                'instructions'   => json_encode([
+                'id' => 29,
+                'name' => 'Spring Roll Sayuran',
+                'instructions' => json_encode([
                     'Tumis wortel, kol, tauge, bihun, dengan bumbu bawang putih, kecap asin',
                     'Diamkan isian hingga dingin',
                     'Ambil kulit lumpia, isi dengan sayuran, gulung rapat',
@@ -392,12 +392,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dengan saus asam manis',
                 ]),
                 'allergen_notes' => 'Contains: gluten',
-                'image_url'      => 'https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 30,
-                'name'           => 'Bola-Bola Ubi Ungu',
-                'instructions'   => json_encode([
+                'id' => 30,
+                'name' => 'Bola-Bola Ubi Ungu',
+                'instructions' => json_encode([
                     'Kukus ubi ungu hingga matang, haluskan',
                     'Campur ubi dengan tepung tapioka, gula, dan sedikit garam',
                     'Bentuk bulat, isi dengan gula merah leleh',
@@ -405,12 +405,12 @@ class RecipeSeeder extends Seeder
                     'Gulingkan dalam kelapa parut atau taburi gula halus',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1636423848695-2505ee1f3a4c?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1636423848695-2505ee1f3a4c?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 31,
-                'name'           => 'Tiramisu',
-                'instructions'   => json_encode([
+                'id' => 31,
+                'name' => 'Tiramisu',
+                'instructions' => json_encode([
                     'Kocok kuning telur dan gula hingga pucat dan mengembang',
                     'Campurkan mascarpone/cream cheese ke kocokan telur, aduk rata',
                     'Kocok whipping cream hingga kaku, lipat ke campuran cream cheese',
@@ -419,12 +419,12 @@ class RecipeSeeder extends Seeder
                     'Dinginkan 4 jam, taburi cocoa powder sebelum sajikan',
                 ]),
                 'allergen_notes' => 'Contains: egg, dairy, gluten',
-                'image_url'      => 'https://images.unsplash.com/photo-1610406765661-57646c40da59?q=80&w=1374&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1610406765661-57646c40da59?q=80&w=1374&auto=format&fit=crop',
             ],
             [
-                'id'             => 32,
-                'name'           => 'Klepon',
-                'instructions'   => json_encode([
+                'id' => 32,
+                'name' => 'Klepon',
+                'instructions' => json_encode([
                     'Campur tepung ketan, air pandan, dan sedikit garam hingga bisa dibentuk',
                     'Isi dengan gula merah sisir, bentuk bulat',
                     'Rebus dalam air mendidih hingga klepon mengapung',
@@ -432,12 +432,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan segera selagi hangat',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://img.magnific.com/premium-photo/delicious-klepon-traditional-indonesian-culinary-white-background_448865-1779.jpg?w=1480',
+                'image_url' => 'https://img.magnific.com/premium-photo/delicious-klepon-traditional-indonesian-culinary-white-background_448865-1779.jpg?w=1480',
             ],
             [
-                'id'             => 33,
-                'name'           => 'Brownies Panggang',
-                'instructions'   => json_encode([
+                'id' => 33,
+                'name' => 'Brownies Panggang',
+                'instructions' => json_encode([
                     'Lelehkan butter dan dark chocolate bersama, dinginkan sebentar',
                     'Kocok telur dan gula hingga mengembang',
                     'Masukkan campuran coklat ke kocokan telur, aduk balik',
@@ -446,12 +446,12 @@ class RecipeSeeder extends Seeder
                     'Dinginkan sebelum dipotong',
                 ]),
                 'allergen_notes' => 'Contains: egg, dairy, gluten',
-                'image_url'      => 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 34,
-                'name'           => 'Puding Santan Pandan',
-                'instructions'   => json_encode([
+                'id' => 34,
+                'name' => 'Puding Santan Pandan',
+                'instructions' => json_encode([
                     'Campur agar-agar, santan, gula, dan air pandan daun',
                     'Masak dengan api sedang sambil diaduk hingga mendidih',
                     'Tambahkan sedikit garam, koreksi rasa',
@@ -459,12 +459,12 @@ class RecipeSeeder extends Seeder
                     'Dinginkan di kulkas minimal 2 jam hingga set',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://img.magnific.com/premium-photo/green-pudding-cake-sweet-chewy-made-from-coconut-pandan-leaves-served-plate_689427-137.jpg?w=1480',
+                'image_url' => 'https://img.magnific.com/premium-photo/green-pudding-cake-sweet-chewy-made-from-coconut-pandan-leaves-served-plate_689427-137.jpg?w=1480',
             ],
             [
-                'id'             => 35,
-                'name'           => 'Bolu Kukus Mekar',
-                'instructions'   => json_encode([
+                'id' => 35,
+                'name' => 'Bolu Kukus Mekar',
+                'instructions' => json_encode([
                     'Kocok telur, gula, dan SP/emulsifier hingga putih dan kental',
                     'Masukkan tepung terigu yang sudah diayak, aduk balik',
                     'Tambahkan santan dan pewarna sesuai selera',
@@ -472,12 +472,12 @@ class RecipeSeeder extends Seeder
                     'Jangan tutup kukusan rapat agar bolu mekar sempurna',
                 ]),
                 'allergen_notes' => 'Contains: egg, gluten',
-                'image_url'      => 'https://img.magnific.com/foto-premium/bolu-kukus-mekar-atau-sponge-kukus-yang-mekar_685424-205.jpg?w=1480',
+                'image_url' => 'https://img.magnific.com/foto-premium/bolu-kukus-mekar-atau-sponge-kukus-yang-mekar_685424-205.jpg?w=1480',
             ],
             [
-                'id'             => 36,
-                'name'           => 'Es Krim Mangga',
-                'instructions'   => json_encode([
+                'id' => 36,
+                'name' => 'Es Krim Mangga',
+                'instructions' => json_encode([
                     'Haluskan daging mangga harum manis hingga menjadi puree',
                     'Campur puree mangga dengan susu kental manis dan whipping cream',
                     'Kocok campuran hingga tercampur rata',
@@ -486,12 +486,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan dalam cup atau cone',
                 ]),
                 'allergen_notes' => 'Contains: dairy',
-                'image_url'      => 'https://images.unsplash.com/photo-1625060571495-5d63f813e504?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1625060571495-5d63f813e504?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 37,
-                'name'           => 'Lapis Legit',
-                'instructions'   => json_encode([
+                'id' => 37,
+                'name' => 'Lapis Legit',
+                'instructions' => json_encode([
                     'Kocok butter hingga pucat, tambahkan kuning telur satu per satu',
                     'Campur tepung terigu, rempah lapis legit (cinnamon, kardamom, dll)',
                     'Kocok putih telur dengan gula hingga kaku, lipat ke adonan',
@@ -500,24 +500,24 @@ class RecipeSeeder extends Seeder
                     'Potong setelah dingin dengan pisau tajam',
                 ]),
                 'allergen_notes' => 'Contains: egg, dairy, gluten',
-                'image_url'      => 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 38,
-                'name'           => 'Dadar Gulung',
-                'instructions'   => json_encode([
+                'id' => 38,
+                'name' => 'Dadar Gulung',
+                'instructions' => json_encode([
                     'Buat kulit dadar tipis dari tepung, telur, santan, air pandan, dan garam',
                     'Buat isian: masak kelapa parut dengan gula merah, pandan, hingga kering',
                     'Ambil kulit dadar, beri isian, gulung lipat seperti amplop',
                     'Sajikan dalam suhu ruang atau sedikit hangat',
                 ]),
                 'allergen_notes' => 'Contains: egg, gluten',
-                'image_url'      => 'https://images.unsplash.com/photo-1770802858320-50848db704d5?q=80&w=1480&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1770802858320-50848db704d5?q=80&w=1480&auto=format&fit=crop',
             ],
             [
-                'id'             => 39,
-                'name'           => 'Cheesecake Tanpa Oven',
-                'instructions'   => json_encode([
+                'id' => 39,
+                'name' => 'Cheesecake Tanpa Oven',
+                'instructions' => json_encode([
                     'Haluskan biskuit, campur dengan butter leleh, padatkan di dasar loyang',
                     'Dinginkan alas biskuit 30 menit',
                     'Kocok cream cheese, gula, dan perasan lemon hingga lembut',
@@ -526,12 +526,12 @@ class RecipeSeeder extends Seeder
                     'Dinginkan 6 jam atau semalaman, sajikan dengan topping buah',
                 ]),
                 'allergen_notes' => 'Contains: dairy, gluten',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1722686461601-b2a018a4213b?q=80&w=1555&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1722686461601-b2a018a4213b?q=80&w=1555&auto=format&fit=crop',
             ],
             [
-                'id'             => 40,
-                'name'           => 'Kue Lumpur',
-                'instructions'   => json_encode([
+                'id' => 40,
+                'name' => 'Kue Lumpur',
+                'instructions' => json_encode([
                     'Rebus kentang, haluskan selagi panas',
                     'Campur kentang dengan telur, gula, santan, butter, tepung, dan vanilla',
                     'Aduk hingga adonan halus dan tidak bergerindil',
@@ -540,12 +540,12 @@ class RecipeSeeder extends Seeder
                     'Angkat dan beri topping kismis atau kelapa',
                 ]),
                 'allergen_notes' => 'Contains: egg, dairy, gluten',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1715015440855-7d95cf92608a?q=80&w=988&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1715015440855-7d95cf92608a?q=80&w=988&auto=format&fit=crop',
             ],
             [
-                'id'             => 41,
-                'name'           => 'Matcha Latte',
-                'instructions'   => json_encode([
+                'id' => 41,
+                'name' => 'Matcha Latte',
+                'instructions' => json_encode([
                     'Ayak matcha powder ke dalam cangkir',
                     'Tuangkan sedikit air panas (70°C), aduk dengan whisk bamboo hingga tidak bergerindil',
                     'Panaskan susu dan buat busa menggunakan frother atau kocok dalam botol',
@@ -553,12 +553,12 @@ class RecipeSeeder extends Seeder
                     'Tambahkan sirup vanilla dan madu sesuai selera',
                 ]),
                 'allergen_notes' => 'Contains: dairy',
-                'image_url'      => 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?q=80&w=1471&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?q=80&w=1471&auto=format&fit=crop',
             ],
             [
-                'id'             => 42,
-                'name'           => 'Es Jeruk Nipis Madu',
-                'instructions'   => json_encode([
+                'id' => 42,
+                'name' => 'Es Jeruk Nipis Madu',
+                'instructions' => json_encode([
                     'Peras jeruk nipis, saring bijinya',
                     'Campur air jeruk nipis dengan madu, aduk rata',
                     'Tambahkan air mineral, aduk',
@@ -566,24 +566,24 @@ class RecipeSeeder extends Seeder
                     'Garnish dengan irisan jeruk nipis dan daun mint',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1656936632107-0bfa69ea06de?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1656936632107-0bfa69ea06de?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 43,
-                'name'           => 'Jus Alpukat Coklat',
-                'instructions'   => json_encode([
+                'id' => 43,
+                'name' => 'Jus Alpukat Coklat',
+                'instructions' => json_encode([
                     'Belah dan ambil daging alpukat matang',
                     'Masukkan ke blender bersama susu kental manis, susu cair, dan es batu',
                     'Blender hingga halus',
                     'Tuang ke gelas, beri topping sirup coklat atau Milo',
                 ]),
                 'allergen_notes' => 'Contains: dairy',
-                'image_url'      => 'https://images.unsplash.com/photo-1622704430673-59c152a9991c?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1622704430673-59c152a9991c?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 44,
-                'name'           => 'Es Teh Tarik',
-                'instructions'   => json_encode([
+                'id' => 44,
+                'name' => 'Es Teh Tarik',
+                'instructions' => json_encode([
                     'Seduh teh hitam pekat, biarkan hangat',
                     'Tambahkan susu kental manis sesuai selera',
                     'Tarik teh berulang kali antara dua gelas dari ketinggian untuk membuat busa',
@@ -591,12 +591,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan segera',
                 ]),
                 'allergen_notes' => 'Contains: dairy',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1664392087859-815b337c3324?q=80&w=1380&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1664392087859-815b337c3324?q=80&w=1380&auto=format&fit=crop',
             ],
             [
-                'id'             => 45,
-                'name'           => 'Wedang Jahe Serai',
-                'instructions'   => json_encode([
+                'id' => 45,
+                'name' => 'Wedang Jahe Serai',
+                'instructions' => json_encode([
                     'Geprek jahe dan serai',
                     'Rebus air bersama jahe, serai, dan daun pandan',
                     'Masak 15 menit dengan api kecil',
@@ -604,12 +604,12 @@ class RecipeSeeder extends Seeder
                     'Saring dan sajikan panas',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1678890565859-a2dadf52a48f?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1678890565859-a2dadf52a48f?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 46,
-                'name'           => 'Smoothie Bowl Stroberi',
-                'instructions'   => json_encode([
+                'id' => 46,
+                'name' => 'Smoothie Bowl Stroberi',
+                'instructions' => json_encode([
                     'Blender stroberi beku, pisang beku, yogurt, dan sedikit susu',
                     'Blender hingga kental seperti es krim (jangan terlalu encer)',
                     'Tuang ke mangkuk',
@@ -617,12 +617,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan segera sebelum mencair',
                 ]),
                 'allergen_notes' => 'Contains: dairy',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1723568409747-dfaa9b52ab46?q=80&w=1029&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1723568409747-dfaa9b52ab46?q=80&w=1029&auto=format&fit=crop',
             ],
             [
-                'id'             => 47,
-                'name'           => 'Cold Brew Coffee',
-                'instructions'   => json_encode([
+                'id' => 47,
+                'name' => 'Cold Brew Coffee',
+                'instructions' => json_encode([
                     'Campur bubuk kopi kasar dengan air dingin dalam rasio 1:8',
                     'Aduk sebentar, tutup wadah',
                     'Simpan di kulkas minimal 12-18 jam',
@@ -630,12 +630,12 @@ class RecipeSeeder extends Seeder
                     'Sajikan atas es batu dengan susu atau soda water',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1549652127-2e5e59e86a7a?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1549652127-2e5e59e86a7a?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 48,
-                'name'           => 'Es Buah Segar',
-                'instructions'   => json_encode([
+                'id' => 48,
+                'name' => 'Es Buah Segar',
+                'instructions' => json_encode([
                     'Potong dadu semua buah: melon, semangka, apel, nanas, anggur',
                     'Campur buah dalam wadah besar',
                     'Buat sirup: larutkan gula dalam air, tambahkan perasan jeruk nipis',
@@ -643,12 +643,12 @@ class RecipeSeeder extends Seeder
                     'Tambahkan es serut atau es batu, sajikan segera',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://images.unsplash.com/photo-1501118926561-2d75eefb2628?q=80&w=987&auto=format&fit=crop',
+                'image_url' => 'https://images.unsplash.com/photo-1501118926561-2d75eefb2628?q=80&w=987&auto=format&fit=crop',
             ],
             [
-                'id'             => 49,
-                'name'           => 'Boba Milk Tea',
-                'instructions'   => json_encode([
+                'id' => 49,
+                'name' => 'Boba Milk Tea',
+                'instructions' => json_encode([
                     'Rebus pearl boba sesuai petunjuk kemasan hingga kenyal, tiriskan, lumuri gula',
                     'Seduh teh hitam pekat, dinginkan',
                     'Campur teh dengan susu kental manis dan es batu dalam shaker',
@@ -656,12 +656,12 @@ class RecipeSeeder extends Seeder
                     'Tuang ke gelas berisi boba, sajikan dengan sedotan besar',
                 ]),
                 'allergen_notes' => 'Contains: dairy, gluten (boba tapioca)',
-                'image_url'      => 'https://plus.unsplash.com/premium_photo-1664298216218-ff8dfd7719ac?q=80&w=1470&auto=format&fit=crop',
+                'image_url' => 'https://plus.unsplash.com/premium_photo-1664298216218-ff8dfd7719ac?q=80&w=1470&auto=format&fit=crop',
             ],
             [
-                'id'             => 50,
-                'name'           => 'Jamu Kunyit Asam',
-                'instructions'   => json_encode([
+                'id' => 50,
+                'name' => 'Jamu Kunyit Asam',
+                'instructions' => json_encode([
                     'Haluskan kunyit segar, peras airnya',
                     'Rebus air asam jawa, gula merah, dan sedikit garam',
                     'Masukkan sari kunyit ke rebusan',
@@ -669,7 +669,7 @@ class RecipeSeeder extends Seeder
                     'Saring, biarkan dingin, sajikan dengan es atau suhu ruang',
                 ]),
                 'allergen_notes' => 'No common allergens',
-                'image_url'      => 'https://img.magnific.com/foto-gratis/jus-segar-dalam-gelas-di-atas-kain-krem_23-2148647882.jpg?w=1480',
+                'image_url' => 'https://img.magnific.com/foto-gratis/jus-segar-dalam-gelas-di-atas-kain-krem_23-2148647882.jpg?w=1480',
             ],
         ];
 

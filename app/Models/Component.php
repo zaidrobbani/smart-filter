@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ComponentIngredient> $ingredientPivots
+ * @property-read Collection<int, ComponentIngredient> $ingredientPivots
  * @property-read int|null $ingredient_pivots_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Ingredient> $ingredients
+ * @property-read Collection<int, Ingredient> $ingredients
  * @property-read int|null $ingredients_count
- * @property-read \App\Models\Recipe|null $recipe
+ * @property-read Recipe|null $recipe
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Component newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Component newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Component query()
+ *
  * @mixin \Eloquent
  */
 class Component extends Model

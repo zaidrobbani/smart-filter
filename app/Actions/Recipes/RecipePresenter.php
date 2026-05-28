@@ -32,13 +32,13 @@ class RecipePresenter
                         $ingredient = $pivot->ingredient;
 
                         return [
-                            'name'     => $ingredient?->name ?? null,
-                            'note'     => null,
+                            'name' => $ingredient?->name ?? null,
+                            'note' => null,
                             'quantity' => (string) ($pivot->quantity ?? ''),
                         ];
                     });
                 })
-                ->filter(fn ($item) => !empty($item['name']))
+                ->filter(fn ($item) => ! empty($item['name']))
                 ->values()
                 ->all();
         }
@@ -56,46 +56,46 @@ class RecipePresenter
 
         // Normalize: pastikan setiap item punya step, title, description
         $instructions = array_values(array_map(function ($item, $index) {
-        // Kalau item-nya string langsung (format DB kamu)
-        if (is_string($item)) {
+            // Kalau item-nya string langsung (format DB kamu)
+            if (is_string($item)) {
+                return [
+                    'step' => $index + 1,
+                    'title' => 'Step '.($index + 1),
+                    'description' => $item,
+                ];
+            }
+
+            // Kalau item-nya object/array
             return [
-                'step'        => $index + 1,
-                'title'       => 'Step ' . ($index + 1),
-                'description' => $item,
+                'step' => $item['step'] ?? ($index + 1),
+                'title' => $item['title'] ?? $item['name'] ?? 'Step '.($index + 1),
+                'description' => $item['description'] ?? $item['text'] ?? $item['content'] ?? '',
             ];
-        }
-
-        // Kalau item-nya object/array
-        return [
-            'step'        => $item['step'] ?? ($index + 1),
-            'title'       => $item['title'] ?? $item['name'] ?? 'Step ' . ($index + 1),
-            'description' => $item['description'] ?? $item['text'] ?? $item['content'] ?? '',
-        ];
-    }, $raw, array_keys($raw)));
+        }, $raw, array_keys($raw)));
 
         return [
-            'id'          => (string) $recipe->id,
-            'title'       => $recipe->name,
+            'id' => (string) $recipe->id,
+            'title' => $recipe->name,
             'description' => $recipe->allergen_notes ?? 'A delicious recipe from our collection.',
-            'image'       => $recipe->image_url ?? 'https://via.placeholder.com/400x300?text=Recipe',
+            'image' => $recipe->image_url ?? 'https://via.placeholder.com/400x300?text=Recipe',
             'cookingTime' => 30,
-            'tags'        => ['VEGETARIAN'],
-            'label'       => 'FEATURED',
-            'price'       => '$$',
-            'difficulty'  => 'MEDIUM',
+            'tags' => ['VEGETARIAN'],
+            'label' => 'FEATURED',
+            'price' => '$$',
+            'difficulty' => 'MEDIUM',
             'smartSubstitutions' => [
-                'title'       => 'Smart Substitutions',
+                'title' => 'Smart Substitutions',
                 'description' => 'Resourceful cooking means using what you have.',
                 'suggestions' => [],
             ],
-            'ingredients'  => $ingredients,
+            'ingredients' => $ingredients,
             'instructions' => $instructions,
             'nutritionFacts' => [
                 'calories' => mt_rand(100, 800),
-                'protein'  => mt_rand(5, 50) . 'g',
-                'fat'      => mt_rand(5, 50) . 'g',
-                'carbs'    => mt_rand(10, 100) . 'g',
-                'fiber'    => mt_rand(1, 15) . 'g',
+                'protein' => mt_rand(5, 50).'g',
+                'fat' => mt_rand(5, 50).'g',
+                'carbs' => mt_rand(10, 100).'g',
+                'fiber' => mt_rand(1, 15).'g',
             ],
         ];
     }

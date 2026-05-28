@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Auth\Notifications\ResetPassword;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,9 +30,9 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function (object $user, string $token) {
 
             return 'http://localhost:5173/reset-password?token='
-                . $token
-                . '&email='
-                . urlencode($user->email);
+                .$token
+                .'&email='
+                .urlencode($user->email);
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -10,10 +11,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $team_id
  * @property int $user_id
  * @property string $role
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Team|null $team
- * @property-read \App\Models\User $user
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Team|null $team
+ * @property-read User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership query()
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Membership extends Model

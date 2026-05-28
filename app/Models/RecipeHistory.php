@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
  * @property int $user_id
  * @property int $recipe_id
- * @property \Carbon\CarbonImmutable|null $viewed_at
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Recipe $recipe
- * @property-read \App\Models\User $user
+ * @property CarbonImmutable|null $viewed_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Recipe $recipe
+ * @property-read User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeHistory query()
@@ -22,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeHistory whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeHistory whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeHistory whereViewedAt($value)
+ *
  * @mixin \Eloquent
  */
 class RecipeHistory extends Model

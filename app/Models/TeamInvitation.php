@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,12 +13,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $email
  * @property string $role
  * @property int $invited_by
- * @property \Carbon\CarbonImmutable|null $expires_at
- * @property \Carbon\CarbonImmutable|null $accepted_at
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\User $invitedBy
- * @property-read \App\Models\Team|null $team
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $accepted_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read User $invitedBy
+ * @property-read Team|null $team
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation query()
@@ -31,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class TeamInvitation extends Model

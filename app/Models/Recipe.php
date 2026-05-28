@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,10 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property array<array-key, mixed> $instructions
  * @property string|null $allergen_notes
  * @property string|null $image_url
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RecipeHistory> $histories
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Collection<int, RecipeHistory> $histories
  * @property-read int|null $histories_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe query()
@@ -24,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereInstructions($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Recipe extends Model
@@ -58,5 +62,4 @@ class Recipe extends Model
     {
         return $this->hasMany(Bookmark::class, 'recipe_id');
     }
-
 }

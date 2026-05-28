@@ -37,12 +37,12 @@ class HistoryController extends Controller
 
         $formattedHistories = $histories->map(function ($history) {
             return [
-                'id'        => $history->id,
-                'user_id'   => $history->user_id,
+                'id' => $history->id,
+                'user_id' => $history->user_id,
                 'recipe_id' => $history->recipe_id,
                 'viewed_at' => $history->viewed_at,
-                'recipe'    => $history->recipe ? [
-                    'id'    => $history->recipe->id,
+                'recipe' => $history->recipe ? [
+                    'id' => $history->recipe->id,
                     'title' => $history->recipe->name, // pakai 'name'
                     'image' => $history->recipe->image_url ?? null,
                 ] : null,

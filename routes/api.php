@@ -1,20 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\RecipeController;
 use app\Http\Controllers\HistoryController;
+use App\Http\Controllers\RecipeController;
+use Illuminate\Support\Facades\Route;
+
 // ─── AUTH (public) ───────────────────────────────────────────────────────────
-Route::post('/register',        [AuthController::class, 'register']);
-Route::post('/login',           [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/reset-password',  [AuthController::class, 'resetPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Google OAuth — aktifkan jika socialite sudah terpasang
 // Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect']);
 // Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
-
 
 // ─── RECIPES (public) ────────────────────────────────────────────────────────
 //
@@ -29,14 +29,13 @@ Route::post('/reset-password',  [AuthController::class, 'resetPassword']);
 //   ?lang=id                bahasa label: id (default) atau en
 //
 Route::get('/recipes/search/suggestions', [RecipeController::class, 'suggestions']);
-Route::get('/recipes',          [RecipeController::class, 'index']);
-Route::get('/recipes/{id}',     [RecipeController::class, 'show']);  // detail (saat gambar ditekan)
-Route::get('/filter-options',   [RecipeController::class, 'filterOptions']);
+Route::get('/recipes', [RecipeController::class, 'index']);
+Route::get('/recipes/{id}', [RecipeController::class, 'show']);  // detail (saat gambar ditekan)
+Route::get('/filter-options', [RecipeController::class, 'filterOptions']);
 
 // Pencarian dan substitusi bahan
-Route::get('/ingredients/search',                    [RecipeController::class, 'searchIngredients']);
-Route::get('/ingredients/{id}/substitutions',        [RecipeController::class, 'ingredientSubstitutions']);
-
+Route::get('/ingredients/search', [RecipeController::class, 'searchIngredients']);
+Route::get('/ingredients/{id}/substitutions', [RecipeController::class, 'ingredientSubstitutions']);
 
 // ─── PROTECTED ───────────────────────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
@@ -44,17 +43,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Bookmarks
-    Route::get('/bookmarks',                   [BookmarkController::class, 'index']);
-    Route::post('/bookmarks',                  [BookmarkController::class, 'store']);
-    Route::delete('/bookmarks/{recipe_id}',    [BookmarkController::class, 'destroy']);
+    Route::get('/bookmarks', [BookmarkController::class, 'index']);
+    Route::post('/bookmarks', [BookmarkController::class, 'store']);
+    Route::delete('/bookmarks/{recipe_id}', [BookmarkController::class, 'destroy']);
 
     // History
-    Route::post('/history/record',             [HistoryController::class, 'record']);
-    Route::delete('/history/{id}',             [HistoryController::class, 'destroy']);
+    Route::post('/history/record', [HistoryController::class, 'record']);
+    Route::delete('/history/{id}', [HistoryController::class, 'destroy']);
 
     // Debug / test token
     Route::get('/test-auth', fn () => response()->json([
         'message' => 'AUTHORIZED',
-        'user'    => auth('sanctum')->user(),
+        'user' => auth('sanctum')->user(),
     ]));
 });

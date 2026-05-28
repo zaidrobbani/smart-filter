@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -23,13 +23,13 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
         Auth::login($user);
@@ -46,12 +46,12 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (! Auth::attempt($request->only('email', 'password'))) {
             return back()->withErrors([
-                'email' => 'Email atau password salah'
+                'email' => 'Email atau password salah',
             ]);
         }
 
@@ -87,7 +87,7 @@ class AuthController extends Controller
     {
         return Inertia::render('Auth/ResetPassword', [
             'token' => $token,
-            'email' => $request->email
+            'email' => $request->email,
         ]);
     }
 
@@ -103,7 +103,7 @@ class AuthController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
                 ])->save();
                 $user->setRememberToken(Str::random(60));
             }
@@ -128,18 +128,18 @@ class AuthController extends Controller
 
         $user = User::where('email', $googleUser->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             $user = User::create([
                 'username' => $googleUser->name,
                 'email' => $googleUser->email,
                 'google_id' => $googleUser->id,
                 'avatar' => $googleUser->avatar,
-                'password' => bcrypt(Str::random(16))
+                'password' => bcrypt(Str::random(16)),
             ]);
         } else {
             $user->update([
                 'google_id' => $googleUser->id,
-                'avatar' => $googleUser->avatar
+                'avatar' => $googleUser->avatar,
             ]);
         }
 

@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\PasswordUpdateRequest;
 use App\Http\Requests\Settings\ProfileDeleteRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Http\Requests\Settings\PasswordUpdateRequest;
-use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -33,7 +33,7 @@ class ProfileController extends Controller
             return $avatar;
         }
 
-        return asset('storage/' . $avatar);
+        return asset('storage/'.$avatar);
     }
 
     /**
@@ -44,10 +44,10 @@ class ProfileController extends Controller
         $user = $request->user();
 
         return [
-            'id'       => $user->id,
-            'name'     => $user->username,
-            'email'    => $user->email,
-            'avatar'   => $this->resolveAvatarUrl($user->avatar),
+            'id' => $user->id,
+            'name' => $user->username,
+            'email' => $user->email,
+            'avatar' => $this->resolveAvatarUrl($user->avatar),
             'username' => $user->username,
         ];
     }
@@ -58,9 +58,9 @@ class ProfileController extends Controller
     public function show(Request $request): Response
     {
         return Inertia::render('settings/profile', [
-            'user'            => $this->userPayload($request),
+            'user' => $this->userPayload($request),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status'          => $request->session()->get('status'),
+            'status' => $request->session()->get('status'),
         ]);
     }
 
