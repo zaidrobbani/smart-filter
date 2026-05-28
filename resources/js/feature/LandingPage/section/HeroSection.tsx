@@ -175,7 +175,7 @@ export default function HeroSection() {
                                 query.trim().length >= 2 &&
                                 setShowSuggestions(true)
                             }
-                            placeholder="Tomato, Eggs, Garlic..."
+                            placeholder="Tomat, Telur, Bawang Putih...."
                             className="border-outline-variant w-full rounded-xl border bg-white py-5 pr-36 pl-14 text-base shadow-sm transition-all outline-none focus:border-primary focus:ring-2 focus:ring-primary"
                         />
                         <div className="absolute inset-y-2 right-2">
@@ -183,7 +183,7 @@ export default function HeroSection() {
                                 onClick={handleSearch}
                                 className="rounded-lg bg-primary px-6 py-3 font-sans text-sm font-semibold text-white transition-colors hover:bg-primary-600 active:scale-95"
                             >
-                                Find Recipes
+                                Cari Resep
                             </button>
                         </div>
 
@@ -224,7 +224,7 @@ export default function HeroSection() {
                                     </div>
                                 ) : (
                                     <div className="text-on-surface-variant px-4 py-8 text-center text-sm">
-                                        No recipes found
+                                        Tidak ada resep ditemukan
                                     </div>
                                 )}
                             </div>
@@ -232,12 +232,12 @@ export default function HeroSection() {
                     </div>
                     <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                         <span className="text-outline text-xs font-medium tracking-wider uppercase">
-                            Try:
+                            Coba:
                         </span>
                         {[
-                            'Avocado & Lime',
-                            'Leftover Chicken',
-                            'Zucchini, Pasta',
+                            'Sapi',
+                            'Ayam',
+                            'Udang',
                         ].map((tag) => (
                             <button
                                 key={tag}
@@ -245,7 +245,7 @@ export default function HeroSection() {
                                     setQuery(tag);
                                     router.get('/recipes', { search: tag });
                                 }}
-                                className="bg-secondary-container text-on-secondary-container rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80"
+                                className="bg-secondary-container text-on-secondary-container rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80 cursor-pointer"
                             >
                                 {tag}
                             </button>

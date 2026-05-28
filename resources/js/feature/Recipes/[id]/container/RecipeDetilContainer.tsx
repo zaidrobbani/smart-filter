@@ -1,16 +1,17 @@
 import MainLayout from '@/layout/MainLayout';
-import RecipeDetil from '../component/RecipeDetil'
+import RecipeDetil from '../component/RecipeDetil';
 
 interface RecipeShowProps {
-    id: string;
+    // datang dari backend Inertia props
+    recipe: any;
 }
 
-const RecipeDetilContainer = ({ id }: RecipeShowProps) => {
-  return (
-    <MainLayout>
-      <RecipeDetil id={id} />
-    </MainLayout>
-  )
-}
+const RecipeDetilContainer = ({ recipe }: RecipeShowProps) => {
+    return (
+        <MainLayout>
+            <RecipeDetil recipe={recipe} />
+        </MainLayout>
+    );
+};
 
-export default RecipeDetilContainer
+export default RecipeDetilContainer;

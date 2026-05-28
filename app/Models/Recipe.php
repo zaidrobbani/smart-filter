@@ -44,4 +44,19 @@ class Recipe extends Model
     {
         return $this->hasMany(RecipeHistory::class);
     }
+
+    /**
+     * Components yang dimiliki recipe.
+     * (components.recipe_id)
+     */
+    public function components()
+    {
+        return $this->hasMany(Component::class, 'recipe_id', 'id');
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class, 'recipe_id');
+    }
+
 }
