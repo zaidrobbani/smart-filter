@@ -2,8 +2,10 @@
 
 import { Link, usePage } from '@inertiajs/react';
 import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import type { Recipe } from '@/data/recipe-data';
+
 import { RecipeCard } from '@/feature/Recipes/component/RecipesCard';
 import MainLayout from '@/layout/MainLayout';
 
@@ -27,9 +29,9 @@ export default function RecipeCardGrid() {
     const props = usePage().props as unknown as PageProps;
 
     const [searchInput, setSearchInput] = useState<string>(props.search || '');
+    const debounceRef = useRef<number | null>(null);
 
-    const handleSearch = (value: string) => {
-        setSearchInput(value);
+    const commitSearch = (value: string) => {
         const url = new URL(window.location.href);
 
         if (value) {
@@ -41,6 +43,26 @@ export default function RecipeCardGrid() {
         url.searchParams.set('page', '1');
         window.location.href = url.toString();
     };
+
+    const handleSearch = (value: string) => {
+        setSearchInput(value);
+
+        if (debounceRef.current) {
+            window.clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = window.setTimeout(() => {
+            commitSearch(value);
+        }, 500);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (debounceRef.current) {
+                window.clearTimeout(debounceRef.current);
+            }
+        };
+    }, []);
 
     const totalRecipes = props.pagination.total;
     const displayText =

@@ -7,7 +7,7 @@ use App\Actions\Bookmarks\DeleteBookmarkAction;
 use App\Actions\Bookmarks\GetUserBookmarkAction;
 use App\Actions\Recipes\RecipePresenter;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,10 +18,8 @@ class BookmarkController extends Controller
         $bookmarks = app(GetUserBookmarkAction::class)->execute();
 
         $recipes = $bookmarks->map(function ($bookmark) {
-            $recipe = $bookmark->recipe;
-
             return [
-                ...RecipePresenter::present($recipe),
+                ...RecipePresenter::present($bookmark->recipe),
                 'isBookmarked' => true,
             ];
         })->values()->all();
@@ -31,9 +29,13 @@ class BookmarkController extends Controller
         ]);
     }
 
-    public function store(): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $recipeId = request()->input('recipe_id');
+        $validated = $request->validate([
+            'recipe_id' => ['required', 'integer', 'exists:recipes,id'],
+        ]);
+
+        $recipeId = (int) $validated['recipe_id'];
 
         $result = app(CreateBookmarkAction::class)->execute($recipeId);
 

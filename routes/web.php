@@ -18,43 +18,33 @@ Route::inertia('/', 'welcome', [
 Route::inertia('/design-system', 'design-system')->name('design-system');
 
 // Auth
-// Auth
-Route::get('/login', [AuthController::class, 'showLogin'])
-    ->name('login');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 
-Route::post('/login', [AuthController::class, 'login'])
-    ->name('login.store');
-
-Route::get('/register', [AuthController::class, 'showRegister'])
-    ->name('register');
-
-Route::post('/register', [AuthController::class, 'register'])
-    ->name('register.store');
-
-// Recipes
-// routes/web.php
+// Recipes (public)
 Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
 
-// Bookmarks (Public)
+// Protected routes
+Route::middleware(['auth'])->group(function () {
 
-// Profile
-
-// History
-Route::middleware(['auth', 'verified'])->group(function () {
+    // Profile & Settings
     Route::get('/profile', [SettingsProfileController::class, 'show'])->name('profile.show');
     Route::get('/settings/profile', [SettingsProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings/profile', [SettingsProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/settings/password', [SettingsProfileController::class, 'updatePassword'])->name('profile.password.update');
+
+    // Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
     Route::delete('/bookmarks/{recipe_id}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
-    Route::get('/history', [HistoryController::class, 'index'])
-        ->name('history.index');
-    Route::delete('/history/{id}', [HistoryController::class, 'destroy'])
-        ->name('history.destroy');
-    Route::delete('/history/clear', [HistoryController::class, 'clear'])
-        ->name('history.clear');
-    Route::patch('/settings/password', [SettingsProfileController::class, 'updatePassword'])->name('profile.password.update');
+
+    // History — clear HARUS di atas {id} supaya tidak di-capture sebagai parameter
+    Route::delete('/history/clear', [HistoryController::class, 'clear'])->name('history.clear');
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+    Route::delete('/history/{id}', [HistoryController::class, 'destroy'])->name('history.destroy');
 });
 
 // Dashboard (team-based)
@@ -63,5 +53,3 @@ Route::prefix('{current_team}')
     ->group(function () {
         Route::inertia('dashboard', 'dashboard')->name('dashboard');
     });
-
-// require __DIR__.'/settings.php';

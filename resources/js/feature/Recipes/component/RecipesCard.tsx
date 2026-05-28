@@ -71,6 +71,20 @@ export function RecipeCard({
         });
     };
 
+    const getCsrfToken = (): string => {
+        return document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1]
+            ? decodeURIComponent(
+                  document.cookie
+                      .split('; ')
+                      .find((row) => row.startsWith('XSRF-TOKEN='))!
+                      .split('=')[1],
+              )
+            : '';
+    };
+
     const handleHoverEnd = () => {
         if (!cardRef.current || !imageRef.current) {
             return;
@@ -94,57 +108,62 @@ export function RecipeCard({
         e.preventDefault();
         e.stopPropagation();
 
-        // Check if user is authenticated
-        if (!auth.user) {
+        if (!auth?.user) {
             toast.error('Silakan login terlebih dahulu untuk bookmark recipe');
+
             return;
         }
 
         setIsLoading(true);
+        const csrfToken = getCsrfToken();
 
         if (isBookmarked) {
-            // Delete bookmark
-            fetch(`/api/bookmarks/${recipe.id}`, {
+            fetch(`/bookmarks/${recipe.id}`, {
                 method: 'DELETE',
+                headers: {
+                    'X-XSRF-TOKEN': csrfToken,
+                    Accept: 'application/json',
+                },
             })
-                .then(() => {
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error('Failed');
+                    }
+
                     setIsBookmarked(false);
                     toast.success('Bookmark dihapus');
                     onBookmarkChange?.(recipe.id, false);
-                    setIsLoading(false);
                 })
-                .catch(() => {
-                    toast.error('Gagal menghapus bookmark');
-                    setIsLoading(false);
-                });
+                .catch(() => toast.error('Gagal menghapus bookmark'))
+                .finally(() => setIsLoading(false));
         } else {
-            // Create bookmark
-            fetch('/api/bookmarks', {
+            fetch('/bookmarks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': csrfToken,
+                    Accept: 'application/json',
                 },
-                body: JSON.stringify({ recipe_id: recipe.id }),
+                body: JSON.stringify({ recipe_id: Number(recipe.id) }),
             })
-                .then((response) => {
-                    if (response.status === 409) {
+                .then((res) => {
+                    if (res.status === 409) {
                         setIsBookmarked(true);
                         toast.info('Recipe sudah ada di bookmark');
-                        setIsLoading(false);
+
                         return;
                     }
-                    if (!response.ok) {
-                        throw new Error('Failed to create bookmark');
+
+                    if (!res.ok) {
+                        throw new Error('Failed');
                     }
+
                     setIsBookmarked(true);
                     toast.success('Recipe ditambahkan ke bookmark');
                     onBookmarkChange?.(recipe.id, true);
-                    setIsLoading(false);
                 })
-                .catch(() => {
-                    toast.error('Gagal menambahkan bookmark');
-                    setIsLoading(false);
-                });
+                .catch(() => toast.error('Gagal menambahkan bookmark'))
+                .finally(() => setIsLoading(false));
         }
     };
 
