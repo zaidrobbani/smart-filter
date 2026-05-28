@@ -3,7 +3,7 @@ set -e
 
 # Load .env kalau ada
 if [ -f /var/www/html/.env ]; then
-    export $(grep -v '^#' /var/www/html/.env | xargs)
+    export $(grep -v '^#' /var/www/html/.env | grep -v '^\s*$' | sed 's/[[:space:]]*#.*$//' | xargs)
 fi
 
 echo "==> Menunggu database siap... (host: $DB_HOST port: $DB_PORT)"
