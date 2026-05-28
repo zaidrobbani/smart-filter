@@ -78,7 +78,8 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
 
         // Content stagger animation
         if (contentRef.current) {
-            const sections = contentRef.current.querySelectorAll('[data-animate]');
+            const sections =
+                contentRef.current.querySelectorAll('[data-animate]');
             gsap.fromTo(
                 sections,
                 { opacity: 0, y: 20 },
@@ -97,7 +98,9 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
     if (!recipe) {
         return (
             <div className="flex min-h-screen items-center justify-center">
-                <p className="text-lg text-muted-foreground">Recipe not found</p>
+                <p className="text-lg text-muted-foreground">
+                    Recipe not found
+                </p>
             </div>
         );
     }
@@ -115,7 +118,6 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
             <Head title={recipe.title} />
 
             <div className="min-h-screen bg-background px-4 py-8 sm:px-6 lg:px-8">
-
                 {/* Hero Image with Overlay */}
                 <div
                     ref={headerRef}
@@ -162,7 +164,6 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
 
                 {/* Main Content */}
                 <div ref={contentRef} className="mx-auto max-w-6xl py-8">
-
                     {/* Smart Substitutions */}
                     {recipe.smartSubstitutions && (
                         <section
@@ -175,11 +176,15 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
                             <p className="mb-4 text-sm text-tertiary-800">
                                 {recipe.smartSubstitutions.description}
                             </p>
-                            {(recipe.smartSubstitutions.suggestions ?? []).length > 0 && (
+                            {(recipe.smartSubstitutions.suggestions ?? [])
+                                .length > 0 && (
                                 <ul className="space-y-2">
                                     {recipe.smartSubstitutions.suggestions!.map(
                                         (suggestion, idx) => (
-                                            <li key={idx} className="text-sm text-primary-600">
+                                            <li
+                                                key={idx}
+                                                className="text-sm text-primary-600"
+                                            >
                                                 <span className="font-semibold">
                                                     {suggestion.split('?')[0]}
                                                 </span>
@@ -194,10 +199,8 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
 
                     {/* Two-column layout: main content + nutrition sidebar */}
                     <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-
                         {/* Left: Ingredients + Instructions */}
-                        <div className="flex-1 min-w-0">
-
+                        <div className="min-w-0 flex-1">
                             {/* Ingredients Section */}
                             <section data-animate className="mb-12">
                                 <h2 className="mb-4 text-2xl font-bold text-foreground sm:text-3xl">
@@ -258,14 +261,17 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
                                                 {/* Step Number */}
                                                 <div className="shrink-0 pt-1">
                                                     <span className="font-serif text-4xl font-bold text-foreground/20">
-                                                        {(instruction.step ?? 0).toString().padStart(2, '0')}
+                                                        {(instruction.step ?? 0)
+                                                            .toString()
+                                                            .padStart(2, '0')}
                                                     </span>
                                                 </div>
                                                 {/* Step Content */}
                                                 <div className="flex-1 pt-2">
-
                                                     <p className="text-sm text-muted-foreground sm:text-base">
-                                                        {instruction.description}
+                                                        {
+                                                            instruction.description
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>
@@ -280,10 +286,10 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
                         {/* Right: Nutrition Facts (sticky sidebar) */}
                         <aside
                             data-animate
-                            className="w-full lg:w-72 lg:shrink-0 lg:sticky lg:top-8"
+                            className="w-full lg:sticky lg:top-8 lg:w-72 lg:shrink-0"
                         >
                             <div className="rounded-lg border border-border bg-muted p-6">
-                                <h3 className="mb-4 font-bold text-foreground tracking-wide">
+                                <h3 className="mb-4 font-bold tracking-wide text-foreground">
                                     NUTRITION FACTS
                                 </h3>
                                 <div className="space-y-3">
@@ -293,10 +299,23 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
                                             value: `${recipe.nutritionFacts.calories} kcal`,
                                             highlight: true,
                                         },
-                                        { label: 'Protein', value: recipe.nutritionFacts.protein },
-                                        { label: 'Fat',     value: recipe.nutritionFacts.fat },
-                                        { label: 'Carbs',   value: recipe.nutritionFacts.carbs },
-                                        { label: 'Fiber',   value: recipe.nutritionFacts.fiber },
+                                        {
+                                            label: 'Protein',
+                                            value: recipe.nutritionFacts
+                                                .protein,
+                                        },
+                                        {
+                                            label: 'Fat',
+                                            value: recipe.nutritionFacts.fat,
+                                        },
+                                        {
+                                            label: 'Carbs',
+                                            value: recipe.nutritionFacts.carbs,
+                                        },
+                                        {
+                                            label: 'Fiber',
+                                            value: recipe.nutritionFacts.fiber,
+                                        },
                                     ].map(({ label, value, highlight }) => (
                                         <div
                                             key={label}

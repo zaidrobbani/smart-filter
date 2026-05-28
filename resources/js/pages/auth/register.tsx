@@ -1,10 +1,8 @@
-import React from 'react'
+import React from 'react';
 import RegisterContainer from '@/feature/auth/register/container/RegisterContainer';
 
 const register = () => {
-  return (
-    <RegisterContainer/>
-  )
-}
+    return <RegisterContainer />;
+};
 
-export default register
+export default register;

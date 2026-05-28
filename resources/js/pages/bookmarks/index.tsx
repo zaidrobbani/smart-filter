@@ -1,10 +1,8 @@
-import React from 'react'
+import React from 'react';
 import BookmarksContainer from '@/feature/bokkmarks/container/BookmarksContainer';
 
 const index = () => {
-  return (
-    <BookmarksContainer />
-  )
-}
+    return <BookmarksContainer />;
+};
 
-export default index 
+export default index;

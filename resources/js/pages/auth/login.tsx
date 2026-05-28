@@ -1,10 +1,8 @@
-import React from 'react'
-import LoginContainer from '@/feature/auth/login/container/LoginContainer'
+import React from 'react';
+import LoginContainer from '@/feature/auth/login/container/LoginContainer';
 
 const login = () => {
-  return (
-    <LoginContainer />
-  )
-}
+    return <LoginContainer />;
+};
 
-export default login
+export default login;

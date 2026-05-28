@@ -25,7 +25,8 @@ export default function HistoryPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
-    const [filteredHistories, setFilteredHistories] = useState<History[]>(histories);
+    const [filteredHistories, setFilteredHistories] =
+        useState<History[]>(histories);
 
     const handleFilter = () => {
         let filtered: History[] = histories;
@@ -67,9 +68,7 @@ export default function HistoryPage() {
                     throw new Error('Failed to delete history');
                 }
 
-                setFilteredHistories((prev) =>
-                    prev.filter((h) => h.id !== id),
-                );
+                setFilteredHistories((prev) => prev.filter((h) => h.id !== id));
                 toast.success('History item deleted');
             })
             .catch(() => {

@@ -275,7 +275,7 @@ export default function Login() {
                 {/* ── VISUAL SIDE ── */}
                 <div
                     ref={visualSideRef}
-                    className="md:flex md:w-5/12 lg:w-1/2 hidden relative overflow-hidden"
+                    className="relative hidden overflow-hidden md:flex md:w-5/12 lg:w-1/2"
                 >
                     <img
                         ref={imgRef}
@@ -484,7 +484,11 @@ export default function Login() {
                         </div>
 
                         {/* Header */}
-                        <div ref={formHeaderRef} style={{ opacity: 0 }} className='text-center'>
+                        <div
+                            ref={formHeaderRef}
+                            style={{ opacity: 0 }}
+                            className="text-center"
+                        >
                             <h2
                                 style={{
                                     fontFamily: 'Libre Caslon Text, serif',
@@ -493,7 +497,6 @@ export default function Login() {
                                     color: c.primary,
                                     marginBottom: '0.5rem',
                                 }}
-                                
                             >
                                 Welcome Back
                             </h2>
@@ -917,7 +920,7 @@ export default function Login() {
                                 gap: '1.5rem',
                                 opacity: 0,
                             }}
-                            className='flex items-center justify-center'
+                            className="flex items-center justify-center"
                         >
                             {[
                                 'Privacy Policy',
@@ -941,8 +944,6 @@ export default function Login() {
                     </div>
                 </section>
             </main>
-
-            
 
             <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </>

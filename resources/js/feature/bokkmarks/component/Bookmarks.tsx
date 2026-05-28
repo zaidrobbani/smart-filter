@@ -10,7 +10,9 @@ interface BookmarksPageProps {
     recipes: Recipe[];
 }
 
-export default function BookmarksPage({ recipes: initialRecipes }: BookmarksPageProps) {
+export default function BookmarksPage({
+    recipes: initialRecipes,
+}: BookmarksPageProps) {
     const headerRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const descRef = useRef<HTMLParagraphElement>(null);
@@ -46,15 +48,10 @@ export default function BookmarksPage({ recipes: initialRecipes }: BookmarksPage
         return () => ctx.revert();
     }, []);
 
-    const handleBookmarkChange = (
-        recipeId: string,
-        isBookmarked: boolean,
-    ) => {
+    const handleBookmarkChange = (recipeId: string, isBookmarked: boolean) => {
         if (!isBookmarked) {
             // Remove from bookmarks
-            setRecipes((prev) =>
-                prev.filter((r) => r.id !== recipeId),
-            );
+            setRecipes((prev) => prev.filter((r) => r.id !== recipeId));
         }
     };
 
@@ -73,8 +70,8 @@ export default function BookmarksPage({ recipes: initialRecipes }: BookmarksPage
                         ref={descRef}
                         className="mb-8 max-w-2xl text-lg text-neutral-600"
                     >
-                        {recipes.length} recipes curated for your next
-                        culinary adventure.
+                        {recipes.length} recipes curated for your next culinary
+                        adventure.
                     </p>
                 </div>
             </div>
@@ -102,8 +99,8 @@ export default function BookmarksPage({ recipes: initialRecipes }: BookmarksPage
                                 Build Your Collection
                             </h3>
                             <p className="mx-auto mb-8 max-w-md text-neutral-600">
-                                Explore thousands of recipes and save your favorites
-                                to access them anytime, anywhere.
+                                Explore thousands of recipes and save your
+                                favorites to access them anytime, anywhere.
                             </p>
                             <a
                                 href="/recipes"

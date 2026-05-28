@@ -1,10 +1,8 @@
-import React from 'react'
+import React from 'react';
 import RecipeContainer from '@/feature/Recipes/container/RecipesContainer';
 
 const index = () => {
-  return (
-    <RecipeContainer />
-  )
-}
+    return <RecipeContainer />;
+};
 
-export default index
+export default index;

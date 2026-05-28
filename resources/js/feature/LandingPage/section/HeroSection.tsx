@@ -189,7 +189,7 @@ export default function HeroSection() {
 
                         {/* Suggestions Dropdown */}
                         {showSuggestions && (
-                            <div className="border-outline-variant absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-y-auto rounded-xl border bg-white shadow-lg ">
+                            <div className="border-outline-variant absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-y-auto rounded-xl border bg-white shadow-lg">
                                 {isLoadingSuggestions ? (
                                     <div className="text-on-surface-variant px-4 py-8 text-center">
                                         <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -204,7 +204,7 @@ export default function HeroSection() {
                                                         suggestion,
                                                     )
                                                 }
-                                                className="hover:bg-secondary-100 flex w-full items-center gap-3 px-4 py-3 text-left transition-colors cursor-pointer"
+                                                className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-secondary-100"
                                             >
                                                 <img
                                                     src={suggestion.image}
@@ -234,18 +234,14 @@ export default function HeroSection() {
                         <span className="text-outline text-xs font-medium tracking-wider uppercase">
                             Coba:
                         </span>
-                        {[
-                            'Sapi',
-                            'Ayam',
-                            'Udang',
-                        ].map((tag) => (
+                        {['Sapi', 'Ayam', 'Udang'].map((tag) => (
                             <button
                                 key={tag}
                                 onClick={() => {
                                     setQuery(tag);
                                     router.get('/recipes', { search: tag });
                                 }}
-                                className="bg-secondary-container text-on-secondary-container rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80 cursor-pointer"
+                                className="bg-secondary-container text-on-secondary-container cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80"
                             >
                                 {tag}
                             </button>

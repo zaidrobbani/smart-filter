@@ -1,9 +1,7 @@
-import LandingPageContainer from '@/feature/LandingPage/container/LandingPageContainer'
+import LandingPageContainer from '@/feature/LandingPage/container/LandingPageContainer';
 
 const welcome = () => {
-  return (
-    <LandingPageContainer/>
-  )
-}
+    return <LandingPageContainer />;
+};
 
-export default welcome
+export default welcome;

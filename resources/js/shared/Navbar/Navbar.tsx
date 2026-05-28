@@ -321,7 +321,7 @@ export function Navbar() {
                         )}
 
                         <Link href={'/profile'}>
-                            <button className="text-on-surface-variant transition hover:scale-105 cursor-pointer">
+                            <button className="text-on-surface-variant cursor-pointer transition hover:scale-105">
                                 <CircleUserRound className="h-6 w-6" />
                             </button>
                         </Link>

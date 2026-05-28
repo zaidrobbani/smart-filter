@@ -14,7 +14,10 @@ export function Footer() {
                 footerRef.current,
                 { y: 30, opacity: 0 },
                 {
-                    y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: 'power3.out',
                     scrollTrigger: {
                         trigger: footerRef.current,
                         start: 'top 95%',
@@ -24,17 +27,16 @@ export function Footer() {
             );
         }, footerRef);
 
-        return () => 
-            ctx.revert();
+        return () => ctx.revert();
     }, []);
 
     return (
         <footer
             ref={footerRef}
-            className="bg-surface-container border-t border-outline-variant opacity-0"
+            className="bg-surface-container border-outline-variant border-t opacity-0"
         >
-            <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row justify-between items-center py-12 px-4 md:px-20 gap-6">
-                <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-6 px-4 py-12 md:flex-row md:px-20">
+                <div className="flex flex-col items-center gap-2 md:items-start">
                     <Link href="/" className="flex items-center gap-2">
                         <span
                             className="text-lg font-bold text-primary"
@@ -43,7 +45,7 @@ export function Footer() {
                             SmartFilter
                         </span>
                     </Link>
-                    <p className="font-sans text-sm text-on-surface-variant text-center md:text-left">
+                    <p className="text-on-surface-variant text-center font-sans text-sm md:text-left">
                         © 2024 SmartFilter. Crafted with ❤️
                     </p>
                 </div>
@@ -58,7 +60,7 @@ export function Footer() {
                         <Link
                             key={label}
                             href={href}
-                            className="font-sans text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider"
+                            className="text-on-surface-variant font-sans text-xs font-semibold tracking-wider uppercase transition-colors hover:text-primary"
                         >
                             {label}
                         </Link>
