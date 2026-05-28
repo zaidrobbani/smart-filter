@@ -27,9 +27,17 @@ WORKDIR /var/www/html
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --no-progress --prefer-dist --no-scripts
+RUN composer install --no-interaction --no-progress --prefer-dist --no-scripts --no-dev
 
+# Install Node dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy all source files
 COPY . .
+
+# Build frontend assets (Vite)
+RUN npm run build
 
 RUN composer run-script post-autoload-dump || true
 
