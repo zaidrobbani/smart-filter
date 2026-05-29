@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -25,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        if ($this->app->environment('production') ||
+            str_starts_with(config('app.url'), 'https://') ||
+            request()->header('X-Forwarded-Proto') === 'https') {
+            URL::forceScheme('https');
+        }
 
         // CUSTOM RESET PASSWORD URL
         ResetPassword::createUrlUsing(function (object $user, string $token) {
