@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Database\Factories\TeamInvitationFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -38,6 +40,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class TeamInvitation extends Model
 {
+    /** @use HasFactory<TeamInvitationFactory> */
+    use HasFactory;
+
     protected $fillable = ['code', 'team_id', 'email', 'role', 'invited_by', 'expires_at', 'accepted_at'];
 
     protected function casts(): array

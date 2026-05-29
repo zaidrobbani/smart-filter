@@ -33,12 +33,12 @@ class CreateNewUser implements CreatesNewUsers
 
         return DB::transaction(function () use ($input) {
             $user = User::create([
-                'name' => $input['name'],
+                'username' => $input['name'],
                 'email' => $input['email'],
                 'password' => $input['password'],
             ]);
 
-            $this->createTeam->handle($user, $user->name."'s Team", isPersonal: true);
+            $this->createTeam->handle($user, $user->username."'s Team", isPersonal: true);
 
             return $user;
         });

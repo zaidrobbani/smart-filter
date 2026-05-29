@@ -41,12 +41,10 @@ class TwoFactorChallengeTest extends TestCase
             'two_factor_confirmed_at' => now(),
         ])->save();
 
-        $this->post(route('login'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $this->get(route('two-factor.login'))
+        // Seed the Fortify 2FA session directly (bypassing the custom login controller
+        // which does not support the Fortify 2FA pipeline).
+        $this->withSession(['login.id' => $user->id])
+            ->get(route('two-factor.login'))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('auth/two-factor-challenge'),

@@ -5,6 +5,7 @@ use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\Settings\ProfileController as SettingsProfileController;
+use App\Http\Controllers\Settings\SecurityController as SettingsSecurityController;
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -34,7 +35,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [SettingsProfileController::class, 'show'])->name('profile.show');
     Route::get('/settings/profile', [SettingsProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings/profile', [SettingsProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/settings/profile', [SettingsProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/settings/password', [SettingsProfileController::class, 'updatePassword'])->name('profile.password.update');
+
+    // Security settings
+    Route::get('/settings/security', [SettingsSecurityController::class, 'edit'])->name('security.edit');
 
     // Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');

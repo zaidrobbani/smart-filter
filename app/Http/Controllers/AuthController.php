@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Teams\CreateTeam;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
@@ -21,20 +23,24 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
-            'username' => $request->username,
+            'username' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        app(CreateTeam::class)->handle($user, $user->username."'s Team", isPersonal: true);
+
         Auth::login($user);
 
-        return redirect('/');
+        $user->refresh();
+
+        return redirect()->route('dashboard', ['current_team' => $user->currentTeam->slug]);
     }
 
     public function showLogin()
@@ -49,15 +55,30 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        $key = md5('login'.$request->email.'|'.$request->ip());
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            abort(429);
+        }
+
         if (! Auth::attempt($request->only('email', 'password'))) {
+            RateLimiter::hit($key);
+
             return back()->withErrors([
                 'email' => 'Email atau password salah',
             ]);
         }
 
+        RateLimiter::clear($key);
         $request->session()->regenerate();
 
-        return redirect('/');
+        $user = auth()->user();
+
+        if ($currentTeam = $user->currentTeam) {
+            return redirect()->route('dashboard', ['current_team' => $currentTeam->slug]);
+        }
+
+        return redirect()->route('home');
     }
 
     public function logout(Request $request)
