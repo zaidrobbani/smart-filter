@@ -44,7 +44,7 @@ class AuthController extends Controller
 
         $user->refresh();
 
-        return redirect()->route('dashboard', ['current_team' => $user->currentTeam->slug]);
+        return redirect()->route('home');
     }
 
     public function showLogin()
@@ -75,12 +75,6 @@ class AuthController extends Controller
 
         RateLimiter::clear($key);
         $request->session()->regenerate();
-
-        $user = auth()->user();
-
-        if ($currentTeam = $user->currentTeam) {
-            return redirect()->route('dashboard', ['current_team' => $currentTeam->slug]);
-        }
 
         return redirect()->route('home');
     }
