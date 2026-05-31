@@ -52,6 +52,7 @@ export default function HistoryPage() {
             filtered = filtered.filter((h) => {
                 const viewedDate = new Date(h.viewed_at);
                 const fromDate = new Date(from);
+
                 return viewedDate >= fromDate;
             });
         }
@@ -61,6 +62,7 @@ export default function HistoryPage() {
                 const viewedDate = new Date(h.viewed_at);
                 const toDate = new Date(to);
                 toDate.setHours(23, 59, 59, 999);
+
                 return viewedDate <= toDate;
             });
         }
