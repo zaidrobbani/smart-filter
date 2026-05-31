@@ -259,7 +259,7 @@ export default function ProfilePage() {
             <Navbar />
             <div
                 ref={sectionRef}
-                className="to-primary-50 min-h-screen bg-linear-to-br from-neutral-50 via-neutral-100 py-12"
+                className="to-primary-50 min-h-screen bg-linear-to-br from-neutral-50 via-neutral-100 py-12 mt-12"
             >
                 {/* Toast Notification */}
                 {toastMessage && (
