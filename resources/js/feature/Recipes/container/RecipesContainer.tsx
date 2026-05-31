@@ -32,9 +32,13 @@ export default function RecipeCardGrid() {
     const debounceRef = useRef<number | null>(null);
 
     const getRelativeUrl = (urlStr: string | null) => {
-        if (!urlStr) return '';
+        if (!urlStr) {
+            return '';
+        }
+
         try {
             const parsed = new URL(urlStr);
+
             return parsed.pathname + parsed.search;
         } catch {
             return urlStr || '';
