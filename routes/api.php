@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
-use app\Http\Controllers\HistoryController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
 

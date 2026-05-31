@@ -1,6 +1,6 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { Clock3, RotateCcw, Trash2, Search, Calendar } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import MainLayout from '@/layout/MainLayout';
 
@@ -28,52 +28,60 @@ export default function HistoryPage() {
     const [filteredHistories, setFilteredHistories] =
         useState<History[]>(histories);
 
-    const handleFilter = () => {
-        let filtered: History[] = histories;
+    // Sync filteredHistories when histories prop changes (after Inertia visit)
+    useEffect(() => {
+        applyFilter(histories, searchQuery, fromDate, toDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [histories]);
 
-        if (searchQuery) {
+    const applyFilter = (
+        source: History[],
+        query: string,
+        from: string,
+        to: string,
+    ) => {
+        let filtered = source;
+
+        if (query) {
             filtered = filtered.filter((h) =>
-                h.recipe?.title
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()),
+                h.recipe?.title.toLowerCase().includes(query.toLowerCase()),
             );
         }
 
-        if (fromDate) {
+        if (from) {
             filtered = filtered.filter((h) => {
                 const viewedDate = new Date(h.viewed_at);
-                const from = new Date(fromDate);
-
-                return viewedDate >= from;
+                const fromDate = new Date(from);
+                return viewedDate >= fromDate;
             });
         }
 
-        if (toDate) {
+        if (to) {
             filtered = filtered.filter((h) => {
                 const viewedDate = new Date(h.viewed_at);
-                const to = new Date(toDate);
-                to.setHours(23, 59, 59, 999);
-
-                return viewedDate <= to;
+                const toDate = new Date(to);
+                toDate.setHours(23, 59, 59, 999);
+                return viewedDate <= toDate;
             });
         }
 
         setFilteredHistories(filtered);
     };
 
-    const handleDeleteItem = (id: number) => {
-        fetch(`/api/history/${id}`, { method: 'DELETE' })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to delete history');
-                }
+    const handleFilter = () => {
+        applyFilter(histories, searchQuery, fromDate, toDate);
+    };
 
-                setFilteredHistories((prev) => prev.filter((h) => h.id !== id));
+    const handleDeleteItem = (id: number) => {
+        router.delete(`/history/${id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
                 toast.success('History item deleted');
-            })
-            .catch(() => {
+            },
+            onError: () => {
                 toast.error('Failed to delete history item');
-            });
+            },
+        });
     };
 
     const handleClearAll = () => {
@@ -82,7 +90,14 @@ export default function HistoryPage() {
                 'Apakah Anda yakin ingin menghapus semua history? Tindakan ini tidak dapat dibatalkan.',
             )
         ) {
-            router.delete('/history/clear');
+            router.delete('/history/clear', {
+                onSuccess: () => {
+                    toast.success('All history cleared');
+                },
+                onError: () => {
+                    toast.error('Failed to clear history');
+                },
+            });
         }
     };
 
@@ -112,7 +127,7 @@ export default function HistoryPage() {
                         </p>
                     </div>
 
-                    {filteredHistories.length > 0 && (
+                    {histories.length > 0 && (
                         <button
                             onClick={handleClearAll}
                             className="flex h-12 items-center justify-center gap-2 rounded-xl border border-[#C88962] px-5 text-sm font-medium text-[#8B451F] transition-all hover:bg-[#F1E7DF]"
@@ -215,19 +230,40 @@ export default function HistoryPage() {
                 {/* List or Empty State */}
                 {filteredHistories.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-40 text-center">
-                        <h2 className="font-serif text-3xl font-bold text-[#8B451F]">
-                            No History Yet
-                        </h2>
-                        <p className="mt-3 max-w-md text-[#746B64]">
-                            Start exploring recipes and your recently viewed
-                            dishes will appear here.
-                        </p>
-                        <Link
-                            href="/recipes"
-                            className="mt-8 rounded-xl bg-[#8B451F] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
-                        >
-                            Explore Recipes
-                        </Link>
+                        {histories.length > 0 ? (
+                            <>
+                                <h2 className="font-serif text-3xl font-bold text-[#8B451F]">
+                                    No Matching History
+                                </h2>
+                                <p className="mt-3 max-w-md text-[#746B64]">
+                                    No recipes match your current filters. Try
+                                    adjusting your search or date range.
+                                </p>
+                                <button
+                                    onClick={handleResetFilters}
+                                    className="mt-8 flex items-center gap-2 rounded-xl border border-[#C88962] px-6 py-3 text-sm font-medium text-[#8B451F] transition hover:bg-[#F1E7DF]"
+                                >
+                                    <RotateCcw size={16} />
+                                    Reset Filters
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <h2 className="font-serif text-3xl font-bold text-[#8B451F]">
+                                    No History Yet
+                                </h2>
+                                <p className="mt-3 max-w-md text-[#746B64]">
+                                    Start exploring recipes and your recently
+                                    viewed dishes will appear here.
+                                </p>
+                                <Link
+                                    href="/recipes"
+                                    className="mt-8 rounded-xl bg-[#8B451F] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+                                >
+                                    Explore Recipes
+                                </Link>
+                            </>
+                        )}
                     </div>
                 ) : (
                     <div className="space-y-4">
@@ -269,7 +305,9 @@ export default function HistoryPage() {
                                 </Link>
 
                                 <button
-                                    onClick={() => handleDeleteItem(history.id)}
+                                    onClick={() =>
+                                        handleDeleteItem(history.id)
+                                    }
                                     className="ml-4 flex h-10 w-10 items-center justify-center rounded-lg border border-[#C88962] text-[#8B451F] transition hover:bg-[#FEE8D8]"
                                     title="Delete this history item"
                                 >
