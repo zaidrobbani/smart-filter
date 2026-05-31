@@ -117,7 +117,7 @@ export default function RecipeShow({ recipe }: RecipeShowProps) {
         <React.Fragment>
             <Head title={recipe.title} />
 
-            <div className="min-h-screen bg-background px-4 py-8 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-background px-4 pt-24 pb-8 sm:px-6 sm:pt-28 lg:px-8">
                 {/* Hero Image with Overlay */}
                 <div
                     ref={headerRef}

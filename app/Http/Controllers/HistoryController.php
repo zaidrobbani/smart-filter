@@ -61,7 +61,7 @@ class HistoryController extends Controller
             ->firstOrFail()
             ->delete();
 
-        return response()->json(['message' => 'History deleted successfully'], 200);
+        return redirect()->back();
     }
 
     public function record(Request $request)

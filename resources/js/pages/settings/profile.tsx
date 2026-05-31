@@ -3,8 +3,9 @@
 import { router, usePage } from '@inertiajs/react';
 import gsap from 'gsap';
 import { Camera, Loader2, UserCircle2 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { Navbar } from '../../shared/Navbar/Navbar';
 
 interface ProfileFormData {
     name: string;
@@ -254,399 +255,411 @@ export default function ProfilePage() {
     const displayedAvatar = previewUrl ?? userData?.avatar ?? null;
 
     return (
-        <div
-            ref={sectionRef}
-            className="to-primary-50 min-h-screen bg-linear-to-br from-neutral-50 via-neutral-100 py-12"
-        >
-            {/* Toast Notification */}
-            {toastMessage && (
-                <div className="fixed top-4 right-4 z-50 animate-in fade-in slide-in-from-top-2">
-                    <div
-                        className={`rounded-lg px-6 py-3 text-white shadow-lg ${
-                            toastMessage.type === 'success'
-                                ? 'bg-green-500'
-                                : 'bg-red-500'
-                        }`}
-                    >
-                        {toastMessage.message}
-                    </div>
-                </div>
-            )}
-
-            <div className="mx-auto max-w-2xl px-6 md:px-8">
-                {/* Header */}
-                <h1 className="mb-8 font-serif text-4xl font-bold text-primary-700 md:text-5xl">
-                    Account Settings
-                </h1>
-
-                {/* Personal Information Section */}
-                <div
-                    ref={personalInfoRef}
-                    className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm"
-                >
-                    <div className="mb-8 flex items-center justify-between">
-                        <h2 className="font-serif text-2xl font-semibold text-tertiary-600">
-                            Personal Information
-                        </h2>
-                        <button
-                            onClick={() => {
-                                if (isEditMode) {
-                                    resetEditState();
-                                } else {
-                                    setIsEditMode(true);
-                                }
-                            }}
-                            className={`cursor-pointer rounded-lg px-4 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors duration-300 ${
-                                isEditMode
-                                    ? 'bg-primary-600 text-white hover:bg-primary-700'
-                                    : 'hover:bg-primary-50 text-primary-600'
+        <React.Fragment>
+            <Navbar />
+            <div
+                ref={sectionRef}
+                className="to-primary-50 min-h-screen bg-linear-to-br from-neutral-50 via-neutral-100 py-12"
+            >
+                {/* Toast Notification */}
+                {toastMessage && (
+                    <div className="fixed top-4 right-4 z-50 animate-in fade-in slide-in-from-top-2">
+                        <div
+                            className={`rounded-lg px-6 py-3 text-white shadow-lg ${
+                                toastMessage.type === 'success'
+                                    ? 'bg-green-500'
+                                    : 'bg-red-500'
                             }`}
                         >
-                            {isEditMode ? 'Cancel' : 'Edit'}
-                        </button>
-                    </div>
-
-                    {/* Profile Section */}
-                    <div className="mb-10 flex flex-col items-start gap-6 md:flex-row md:items-center">
-                        <div className="group relative">
-                            <AvatarImage
-                                src={displayedAvatar}
-                                alt="Profile"
-                                className="h-24 w-24 rounded-full border-4 border-primary-500 object-cover text-primary-300 shadow-md"
-                            />
-                            {isEditMode && (
-                                <>
-                                    <label
-                                        htmlFor="profile-upload"
-                                        className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                                    >
-                                        <Camera className="h-6 w-6 text-white" />
-                                    </label>
-                                    <input
-                                        id="profile-upload"
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageUpload}
-                                        className="hidden"
-                                    />
-                                </>
-                            )}
-                        </div>
-                        <div>
-                            <p className="font-serif text-xl font-semibold text-neutral-800">
-                                {watchName || userData?.name}
-                            </p>
-                            <p className="text-sm text-neutral-600">
-                                {watchEmail || userData?.email}
-                            </p>
+                            {toastMessage.message}
                         </div>
                     </div>
+                )}
 
-                    {/* Form Fields */}
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleSubmit(onSubmit)(e);
-                        }}
-                        className="space-y-6"
+                <div className="mx-auto max-w-2xl px-6 md:px-8">
+                    {/* Header */}
+                    <h1 className="mb-8 font-serif text-4xl font-bold text-primary-700 md:text-5xl">
+                        Account Settings
+                    </h1>
+
+                    {/* Personal Information Section */}
+                    <div
+                        ref={personalInfoRef}
+                        className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm"
                     >
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            {/* Full Name */}
-                            <div className="space-y-2">
-                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
-                                    Full Name
-                                </label>
-                                <input
-                                    {...register('name', {
-                                        required: 'Name is required',
-                                        minLength: {
-                                            value: 3,
-                                            message:
-                                                'Name must be at least 3 characters',
-                                        },
-                                    })}
-                                    type="text"
-                                    disabled={!isEditMode}
-                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 ${
-                                        isEditMode
-                                            ? 'border-neutral-300 bg-white focus:border-transparent focus:ring-2 focus:ring-primary-500'
-                                            : 'cursor-not-allowed border-neutral-200 bg-neutral-50 text-neutral-600'
-                                    } ${errors.name ? 'border-red-500' : ''}`}
-                                />
-                                {errors.name && (
-                                    <p className="text-xs text-red-500">
-                                        {errors.name.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            {/* Email */}
-                            <div className="space-y-2">
-                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
-                                    Email Address
-                                </label>
-                                <input
-                                    {...register('email', {
-                                        required: 'Email is required',
-                                        pattern: {
-                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                            message: 'Invalid email address',
-                                        },
-                                    })}
-                                    type="email"
-                                    disabled={!isEditMode}
-                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 ${
-                                        isEditMode
-                                            ? 'border-neutral-300 bg-white focus:border-transparent focus:ring-2 focus:ring-primary-500'
-                                            : 'cursor-not-allowed border-neutral-200 bg-neutral-50 text-neutral-600'
-                                    } ${errors.email ? 'border-red-500' : ''}`}
-                                />
-                                {errors.email && (
-                                    <p className="text-xs text-red-500">
-                                        {errors.email.message}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Save Changes Button */}
-                        {isEditMode && (isDirty || imageFile) && (
-                            <div className="flex justify-end gap-4 pt-4">
-                                <button
-                                    type="button"
-                                    onClick={resetEditState}
-                                    disabled={isLoading}
-                                    className="cursor-pointer rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50"
-                                >
-                                    {isLoading && (
-                                        <Loader2 className="h-4 w-4 animate-spin" />
-                                    )}
-                                    Save Changes
-                                </button>
-                            </div>
-                        )}
-                    </form>
-                </div>
-
-                {/* Account Security Section */}
-                <div
-                    ref={securityRef}
-                    className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm"
-                >
-                    <h2 className="mb-8 font-serif text-2xl font-semibold text-tertiary-600">
-                        Account Security
-                    </h2>
-
-                    <div className="space-y-6 divide-y divide-neutral-200">
-                        {/* Password Section */}
-                        <div className="flex items-center justify-between py-6">
-                            <div>
-                                <p className="text-lg font-semibold text-neutral-800">
-                                    Password
-                                </p>
-                                <p className="mt-1 text-sm text-neutral-600">
-                                    Last changed 4 months ago
-                                </p>
-                            </div>
+                        <div className="mb-8 flex items-center justify-between">
+                            <h2 className="font-serif text-2xl font-semibold text-tertiary-600">
+                                Personal Information
+                            </h2>
                             <button
-                                onClick={() => setIsPasswordModalOpen(true)}
-                                className="hover:bg-primary-50 cursor-pointer rounded-lg border-2 border-primary-600 px-6 py-2 text-xs font-semibold tracking-wider text-primary-600 uppercase transition-colors duration-300"
-                            >
-                                Update
-                            </button>
-                        </div>
-
-                        {/* 2FA Section */}
-                        <div className="flex items-center justify-between py-6">
-                            <div>
-                                <p className="text-lg font-semibold text-neutral-800">
-                                    Two-Factor Authentication
-                                </p>
-                                <p className="mt-1 text-sm text-neutral-600">
-                                    Add an extra layer of security to your
-                                    account
-                                </p>
-                            </div>
-                            <button
-                                onClick={handleToggle2FA}
-                                className={`relative h-8 w-14 cursor-pointer rounded-full transition-all duration-300 ${
-                                    is2FAEnabled
-                                        ? 'bg-primary-600'
-                                        : 'bg-neutral-300'
+                                onClick={() => {
+                                    if (isEditMode) {
+                                        resetEditState();
+                                    } else {
+                                        setIsEditMode(true);
+                                    }
+                                }}
+                                className={`cursor-pointer rounded-lg px-4 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors duration-300 ${
+                                    isEditMode
+                                        ? 'bg-primary-600 text-white hover:bg-primary-700'
+                                        : 'hover:bg-primary-50 text-primary-600'
                                 }`}
                             >
-                                <div
-                                    data-toggle-indicator
-                                    className={`absolute top-1 h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ${
-                                        is2FAEnabled
-                                            ? 'translate-x-7'
-                                            : 'translate-x-1'
-                                    }`}
-                                />
+                                {isEditMode ? 'Cancel' : 'Edit'}
                             </button>
                         </div>
 
-                        {/* Logout Section */}
-                        <div className="flex items-center justify-between py-6">
+                        {/* Profile Section */}
+                        <div className="mb-10 flex flex-col items-start gap-6 md:flex-row md:items-center">
+                            <div className="group relative">
+                                <AvatarImage
+                                    src={displayedAvatar}
+                                    alt="Profile"
+                                    className="h-24 w-24 rounded-full border-4 border-primary-500 object-cover text-primary-300 shadow-md"
+                                />
+                                {isEditMode && (
+                                    <>
+                                        <label
+                                            htmlFor="profile-upload"
+                                            className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                        >
+                                            <Camera className="h-6 w-6 text-white" />
+                                        </label>
+                                        <input
+                                            id="profile-upload"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            className="hidden"
+                                        />
+                                    </>
+                                )}
+                            </div>
                             <div>
-                                <p className="text-lg font-semibold text-neutral-800">
-                                    Logout Session
+                                <p className="font-serif text-xl font-semibold text-neutral-800">
+                                    {watchName || userData?.name}
                                 </p>
-                                <p className="mt-1 text-sm text-neutral-600">
-                                    Securely sign out from your account
+                                <p className="text-sm text-neutral-600">
+                                    {watchEmail || userData?.email}
                                 </p>
                             </div>
-                            <button
-                                onClick={() => router.post('/logout')}
-                                className="cursor-pointer rounded-lg border-2 border-red-500 px-6 py-2 text-xs font-semibold tracking-wider text-red-500 uppercase transition-colors duration-300 hover:bg-red-50"
-                            >
-                                Logout
-                            </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-            {/* Password Modal */}
-            {isPasswordModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                    <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-8 shadow-xl">
-                        <h3 className="mb-6 font-serif text-2xl font-semibold text-tertiary-600">
-                            Change Password
-                        </h3>
 
+                        {/* Form Fields */}
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                handlePasswordSubmit(handlePasswordUpdate)(e);
+                                handleSubmit(onSubmit)(e);
                             }}
-                            className="space-y-5"
+                            className="space-y-6"
                         >
-                            {/* Current Password */}
-                            <div className="space-y-2">
-                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
-                                    Current Password
-                                </label>
-                                <input
-                                    {...registerPassword('current_password', {
-                                        required:
-                                            'Current password is required',
-                                    })}
-                                    type="password"
-                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
-                                        passwordFormErrors.current_password ||
-                                        passwordErrors.current_password
-                                            ? 'border-red-500'
-                                            : 'border-neutral-300'
-                                    }`}
-                                />
-                                {(passwordFormErrors.current_password ||
-                                    passwordErrors.current_password) && (
-                                    <p className="text-xs text-red-500">
-                                        {passwordFormErrors.current_password
-                                            ?.message ||
-                                            passwordErrors.current_password}
-                                    </p>
-                                )}
-                            </div>
-
-                            {/* New Password */}
-                            <div className="space-y-2">
-                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
-                                    New Password
-                                </label>
-                                <input
-                                    {...registerPassword('password', {
-                                        required: 'New password is required',
-                                        minLength: {
-                                            value: 8,
-                                            message:
-                                                'Password must be at least 8 characters',
-                                        },
-                                    })}
-                                    type="password"
-                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
-                                        passwordFormErrors.password ||
-                                        passwordErrors.password
-                                            ? 'border-red-500'
-                                            : 'border-neutral-300'
-                                    }`}
-                                />
-                                {(passwordFormErrors.password ||
-                                    passwordErrors.password) && (
-                                    <p className="text-xs text-red-500">
-                                        {passwordFormErrors.password?.message ||
-                                            passwordErrors.password}
-                                    </p>
-                                )}
-                            </div>
-
-                            {/* Confirm New Password */}
-                            <div className="space-y-2">
-                                <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
-                                    Confirm New Password
-                                </label>
-                                <input
-                                    {...registerPassword(
-                                        'password_confirmation',
-                                        {
-                                            required:
-                                                'Please confirm your new password',
-                                        },
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                {/* Full Name */}
+                                <div className="space-y-2">
+                                    <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        {...register('name', {
+                                            required: 'Name is required',
+                                            minLength: {
+                                                value: 3,
+                                                message:
+                                                    'Name must be at least 3 characters',
+                                            },
+                                        })}
+                                        type="text"
+                                        disabled={!isEditMode}
+                                        className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 ${
+                                            isEditMode
+                                                ? 'border-neutral-300 bg-white focus:border-transparent focus:ring-2 focus:ring-primary-500'
+                                                : 'cursor-not-allowed border-neutral-200 bg-neutral-50 text-neutral-600'
+                                        } ${errors.name ? 'border-red-500' : ''}`}
+                                    />
+                                    {errors.name && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.name.message}
+                                        </p>
                                     )}
-                                    type="password"
-                                    className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
-                                        passwordFormErrors.password_confirmation ||
-                                        passwordErrors.password_confirmation
-                                            ? 'border-red-500'
-                                            : 'border-neutral-300'
-                                    }`}
-                                />
-                                {(passwordFormErrors.password_confirmation ||
-                                    passwordErrors.password_confirmation) && (
-                                    <p className="text-xs text-red-500">
-                                        {passwordFormErrors
-                                            .password_confirmation?.message ||
-                                            passwordErrors.password_confirmation}
-                                    </p>
-                                )}
+                                </div>
+
+                                {/* Email */}
+                                <div className="space-y-2">
+                                    <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        {...register('email', {
+                                            required: 'Email is required',
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                message:
+                                                    'Invalid email address',
+                                            },
+                                        })}
+                                        type="email"
+                                        disabled={!isEditMode}
+                                        className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 ${
+                                            isEditMode
+                                                ? 'border-neutral-300 bg-white focus:border-transparent focus:ring-2 focus:ring-primary-500'
+                                                : 'cursor-not-allowed border-neutral-200 bg-neutral-50 text-neutral-600'
+                                        } ${errors.email ? 'border-red-500' : ''}`}
+                                    />
+                                    {errors.email && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
 
-                            {/* Actions */}
-                            <div className="flex justify-end gap-4 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsPasswordModalOpen(false);
-                                        resetPassword();
-                                        setPasswordErrors({});
-                                    }}
-                                    disabled={isPasswordLoading}
-                                    className="cursor-pointer rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={isPasswordLoading}
-                                    className="flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50"
-                                >
-                                    {isPasswordLoading && (
-                                        <Loader2 className="h-4 w-4 animate-spin" />
-                                    )}
-                                    Update Password
-                                </button>
-                            </div>
+                            {/* Save Changes Button */}
+                            {isEditMode && (isDirty || imageFile) && (
+                                <div className="flex justify-end gap-4 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={resetEditState}
+                                        disabled={isLoading}
+                                        className="cursor-pointer rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50"
+                                    >
+                                        {isLoading && (
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        )}
+                                        Save Changes
+                                    </button>
+                                </div>
+                            )}
                         </form>
                     </div>
+
+                    {/* Account Security Section */}
+                    <div
+                        ref={securityRef}
+                        className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm"
+                    >
+                        <h2 className="mb-8 font-serif text-2xl font-semibold text-tertiary-600">
+                            Account Security
+                        </h2>
+
+                        <div className="space-y-6 divide-y divide-neutral-200">
+                            {/* Password Section */}
+                            <div className="flex items-center justify-between py-6">
+                                <div>
+                                    <p className="text-lg font-semibold text-neutral-800">
+                                        Password
+                                    </p>
+                                    <p className="mt-1 text-sm text-neutral-600">
+                                        Last changed 4 months ago
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setIsPasswordModalOpen(true)}
+                                    className="hover:bg-primary-50 cursor-pointer rounded-lg border-2 border-primary-600 px-6 py-2 text-xs font-semibold tracking-wider text-primary-600 uppercase transition-colors duration-300"
+                                >
+                                    Update
+                                </button>
+                            </div>
+
+                            {/* 2FA Section */}
+                            <div className="flex items-center justify-between py-6">
+                                <div>
+                                    <p className="text-lg font-semibold text-neutral-800">
+                                        Two-Factor Authentication
+                                    </p>
+                                    <p className="mt-1 text-sm text-neutral-600">
+                                        Add an extra layer of security to your
+                                        account
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={handleToggle2FA}
+                                    className={`relative h-8 w-14 cursor-pointer rounded-full transition-all duration-300 ${
+                                        is2FAEnabled
+                                            ? 'bg-primary-600'
+                                            : 'bg-neutral-300'
+                                    }`}
+                                >
+                                    <div
+                                        data-toggle-indicator
+                                        className={`absolute top-1 h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ${
+                                            is2FAEnabled
+                                                ? 'translate-x-7'
+                                                : 'translate-x-1'
+                                        }`}
+                                    />
+                                </button>
+                            </div>
+
+                            {/* Logout Section */}
+                            <div className="flex items-center justify-between py-6">
+                                <div>
+                                    <p className="text-lg font-semibold text-neutral-800">
+                                        Logout Session
+                                    </p>
+                                    <p className="mt-1 text-sm text-neutral-600">
+                                        Securely sign out from your account
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => router.post('/logout')}
+                                    className="cursor-pointer rounded-lg border-2 border-red-500 px-6 py-2 text-xs font-semibold tracking-wider text-red-500 uppercase transition-colors duration-300 hover:bg-red-50"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            )}
-        </div>
+                {/* Password Modal */}
+                {isPasswordModalOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                        <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-8 shadow-xl">
+                            <h3 className="mb-6 font-serif text-2xl font-semibold text-tertiary-600">
+                                Change Password
+                            </h3>
+
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handlePasswordSubmit(handlePasswordUpdate)(
+                                        e,
+                                    );
+                                }}
+                                className="space-y-5"
+                            >
+                                {/* Current Password */}
+                                <div className="space-y-2">
+                                    <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                        Current Password
+                                    </label>
+                                    <input
+                                        {...registerPassword(
+                                            'current_password',
+                                            {
+                                                required:
+                                                    'Current password is required',
+                                            },
+                                        )}
+                                        type="password"
+                                        className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
+                                            passwordFormErrors.current_password ||
+                                            passwordErrors.current_password
+                                                ? 'border-red-500'
+                                                : 'border-neutral-300'
+                                        }`}
+                                    />
+                                    {(passwordFormErrors.current_password ||
+                                        passwordErrors.current_password) && (
+                                        <p className="text-xs text-red-500">
+                                            {passwordFormErrors.current_password
+                                                ?.message ||
+                                                passwordErrors.current_password}
+                                        </p>
+                                    )}
+                                </div>
+
+                                {/* New Password */}
+                                <div className="space-y-2">
+                                    <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                        New Password
+                                    </label>
+                                    <input
+                                        {...registerPassword('password', {
+                                            required:
+                                                'New password is required',
+                                            minLength: {
+                                                value: 8,
+                                                message:
+                                                    'Password must be at least 8 characters',
+                                            },
+                                        })}
+                                        type="password"
+                                        className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
+                                            passwordFormErrors.password ||
+                                            passwordErrors.password
+                                                ? 'border-red-500'
+                                                : 'border-neutral-300'
+                                        }`}
+                                    />
+                                    {(passwordFormErrors.password ||
+                                        passwordErrors.password) && (
+                                        <p className="text-xs text-red-500">
+                                            {passwordFormErrors.password
+                                                ?.message ||
+                                                passwordErrors.password}
+                                        </p>
+                                    )}
+                                </div>
+
+                                {/* Confirm New Password */}
+                                <div className="space-y-2">
+                                    <label className="block text-xs font-bold tracking-wider text-neutral-600 uppercase">
+                                        Confirm New Password
+                                    </label>
+                                    <input
+                                        {...registerPassword(
+                                            'password_confirmation',
+                                            {
+                                                required:
+                                                    'Please confirm your new password',
+                                            },
+                                        )}
+                                        type="password"
+                                        className={`w-full rounded-lg border px-4 py-2.5 transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-primary-500 ${
+                                            passwordFormErrors.password_confirmation ||
+                                            passwordErrors.password_confirmation
+                                                ? 'border-red-500'
+                                                : 'border-neutral-300'
+                                        }`}
+                                    />
+                                    {(passwordFormErrors.password_confirmation ||
+                                        passwordErrors.password_confirmation) && (
+                                        <p className="text-xs text-red-500">
+                                            {passwordFormErrors
+                                                .password_confirmation
+                                                ?.message ||
+                                                passwordErrors.password_confirmation}
+                                        </p>
+                                    )}
+                                </div>
+
+                                {/* Actions */}
+                                <div className="flex justify-end gap-4 pt-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setIsPasswordModalOpen(false);
+                                            resetPassword();
+                                            setPasswordErrors({});
+                                        }}
+                                        disabled={isPasswordLoading}
+                                        className="cursor-pointer rounded-lg px-6 py-2.5 font-semibold text-neutral-700 transition-colors duration-300 hover:bg-neutral-100 disabled:opacity-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isPasswordLoading}
+                                        className="flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-8 py-2.5 font-semibold text-white shadow-lg transition-colors duration-300 hover:bg-primary-700 disabled:opacity-50"
+                                    >
+                                        {isPasswordLoading && (
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        )}
+                                        Update Password
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </React.Fragment>
     );
 }
