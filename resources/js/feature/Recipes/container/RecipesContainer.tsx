@@ -31,6 +31,16 @@ export default function RecipeCardGrid() {
     const [searchInput, setSearchInput] = useState<string>(props.search || '');
     const debounceRef = useRef<number | null>(null);
 
+    const getRelativeUrl = (urlStr: string | null) => {
+        if (!urlStr) return '';
+        try {
+            const parsed = new URL(urlStr);
+            return parsed.pathname + parsed.search;
+        } catch {
+            return urlStr || '';
+        }
+    };
+
     const commitSearch = (value: string) => {
         const url = new URL(window.location.href);
 
@@ -116,7 +126,9 @@ export default function RecipeCardGrid() {
                         <div className="flex items-center justify-center gap-4 pt-8">
                             {props.pagination.prevPageUrl && (
                                 <Link
-                                    href={props.pagination.prevPageUrl}
+                                    href={getRelativeUrl(
+                                        props.pagination.prevPageUrl,
+                                    )}
                                     className="rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-white"
                                 >
                                     ← Previous
@@ -130,7 +142,9 @@ export default function RecipeCardGrid() {
 
                             {props.pagination.nextPageUrl && (
                                 <Link
-                                    href={props.pagination.nextPageUrl}
+                                    href={getRelativeUrl(
+                                        props.pagination.nextPageUrl,
+                                    )}
                                     className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary-600"
                                 >
                                     Next →

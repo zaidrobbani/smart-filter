@@ -20,7 +20,7 @@ class GetRecipesAction
             });
         }
 
-        return $query->paginate($perPage, ['*'], 'page', $page);
+        return $query->paginate($perPage, ['*'], 'page', $page)->withQueryString();
 
     }
 }
