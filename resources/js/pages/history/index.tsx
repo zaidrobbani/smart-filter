@@ -31,7 +31,7 @@ export default function HistoryPage() {
     // Sync filteredHistories when histories prop changes (after Inertia visit)
     useEffect(() => {
         applyFilter(histories, searchQuery, fromDate, toDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [histories]);
 
     const applyFilter = (
@@ -307,9 +307,7 @@ export default function HistoryPage() {
                                 </Link>
 
                                 <button
-                                    onClick={() =>
-                                        handleDeleteItem(history.id)
-                                    }
+                                    onClick={() => handleDeleteItem(history.id)}
                                     className="ml-4 flex h-10 w-10 items-center justify-center rounded-lg border border-[#C88962] text-[#8B451F] transition hover:bg-[#FEE8D8]"
                                     title="Delete this history item"
                                 >
