@@ -2,7 +2,13 @@
 
 A smart recipe search and discovery platform that lets home cooks find recipes not just by title, but by **keywords, ingredients, cooking techniques, or any recipe detail**. Users can browse recipes, save bookmarks, and explore culinary possibilities with an intuitive and beautiful interface.
 
-## Our tim PAW-rwxrwxrwx
+if u will to open our website u can access this url 
+
+```bash
+   https://rootcook.bccdev.id
+```
+
+## ✨ Our tim PAW-rwxrwxrwx
 
 - Muhammad Zaid Robbani (245150207111012)
 - Faruqi Akbar (245150207111003)
