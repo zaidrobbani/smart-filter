@@ -13,7 +13,7 @@ if u will to open our website u can access this url
 - Muhammad Zaid Robbani (245150207111012)
 - Faruqi Akbar (245150207111003)
 - Putri Aulia Sari (245150201111009)
-- Alifah Puti Alifiya (245150207111031)
+- Alifah Puti Alifya (245150207111031)
 
 ## ✨ Features
 
