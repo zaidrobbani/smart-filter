@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -57,7 +58,7 @@ class ProfileController extends Controller
      */
     public function show(Request $request): Response
     {
-        $rule = \Illuminate\Validation\Rules\Password::default();
+        $rule = Password::default();
         $minPasswordLength = (new \ReflectionProperty($rule, 'min'))->getValue($rule);
 
         return Inertia::render('settings/profile', [
