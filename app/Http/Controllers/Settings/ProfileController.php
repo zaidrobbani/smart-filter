@@ -57,10 +57,14 @@ class ProfileController extends Controller
      */
     public function show(Request $request): Response
     {
+        $rule = \Illuminate\Validation\Rules\Password::default();
+        $minPasswordLength = (new \ReflectionProperty($rule, 'min'))->getValue($rule);
+
         return Inertia::render('settings/profile', [
             'user' => $this->userPayload($request),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'minPasswordLength' => $minPasswordLength,
         ]);
     }
 

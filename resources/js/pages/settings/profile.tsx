@@ -25,6 +25,7 @@ interface PageProps {
         type: 'success' | 'error';
         message: string;
     };
+    minPasswordLength?: number;
 }
 
 function AvatarImage({
@@ -53,7 +54,7 @@ function AvatarImage({
 }
 
 export default function ProfilePage() {
-    const { user: userData, toast } = usePage().props as PageProps;
+    const { user: userData, toast, minPasswordLength = 8 } = usePage().props as PageProps;
     const [isEditMode, setIsEditMode] = useState(false);
     const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 
@@ -575,9 +576,9 @@ export default function ProfilePage() {
                                             required:
                                                 'New password is required',
                                             minLength: {
-                                                value: 8,
+                                                value: minPasswordLength,
                                                 message:
-                                                    'Password must be at least 8 characters',
+                                                    `Password must be at least ${minPasswordLength} characters`,
                                             },
                                         })}
                                         type="password"

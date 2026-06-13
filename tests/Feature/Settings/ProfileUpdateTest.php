@@ -4,6 +4,7 @@ namespace Tests\Feature\Settings;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ProfileUpdateTest extends TestCase
@@ -95,5 +96,43 @@ class ProfileUpdateTest extends TestCase
             ->assertRedirect(route('profile.edit'));
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_correct_password_must_be_provided_to_update_password()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('profile.edit'))
+            ->patch(route('profile.password.update'), [
+                'current_password' => 'wrong-password',
+                'password' => 'new-password123',
+                'password_confirmation' => 'new-password123',
+            ]);
+
+        $response
+            ->assertSessionHasErrors('current_password')
+            ->assertRedirect(route('profile.edit'));
+    }
+
+    public function test_password_can_be_updated()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('profile.edit'))
+            ->patch(route('profile.password.update'), [
+                'current_password' => 'password',
+                'password' => 'pass1234',
+                'password_confirmation' => 'pass1234',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.edit'));
+
+        $this->assertTrue(Hash::check('pass1234', $user->refresh()->password));
     }
 }
