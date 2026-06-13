@@ -66,12 +66,30 @@ use Laravel\Sanctum\PersonalAccessToken;
  *
  * @mixin \Eloquent
  */
-#[Fillable(['username', 'email', 'password', 'current_team_id', 'google_id', 'avatar'])]
+#[Fillable(['username', 'email', 'password', 'current_team_id', 'google_id', 'avatar', 'password_changed_at'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasTeams, Notifiable, TwoFactorAuthenticatable;
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            if (is_null($user->password_changed_at) && ! is_null($user->password)) {
+                $user->password_changed_at = now();
+            }
+        });
+
+        static::updating(function (User $user) {
+            if ($user->isDirty('password')) {
+                $user->password_changed_at = now();
+            }
+        });
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -84,6 +102,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'password_changed_at' => 'datetime',
         ];
     }
 }

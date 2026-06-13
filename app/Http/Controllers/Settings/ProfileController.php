@@ -50,6 +50,7 @@ class ProfileController extends Controller
             'email' => $user->email,
             'avatar' => $this->resolveAvatarUrl($user->avatar),
             'username' => $user->username,
+            'password_changed_at' => $user->password_changed_at?->toIso8601String(),
         ];
     }
 

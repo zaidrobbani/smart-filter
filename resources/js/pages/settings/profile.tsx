@@ -19,6 +19,7 @@ interface PageProps {
         email: string;
         avatar: string | null;
         username: string;
+        password_changed_at?: string | null;
     };
     errors?: Record<string, string>;
     toast?: {
@@ -259,6 +260,45 @@ export default function ProfilePage() {
     // What to show in the avatar: local preview > server URL > null (fallback icon)
     const displayedAvatar = previewUrl ?? userData?.avatar ?? null;
 
+    const formatLastChanged = (dateString?: string | null) => {
+        if (!dateString) {
+            return 'Never changed';
+        }
+
+        try {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffMins < 1) {
+                return 'Last changed just now';
+            }
+
+            if (diffMins < 60) {
+                return `Last changed ${diffMins} minutes ago`;
+            }
+
+            if (diffHours < 24) {
+                return `Last changed ${diffHours} hours ago`;
+            }
+
+            if (diffDays < 30) {
+                return `Last changed ${diffDays} days ago`;
+            }
+
+            return `Last changed on ${date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            })}`;
+        } catch (e) {
+            return `Last changed recently ${e instanceof Error ? e.message : ''}`;
+        }
+    };
+
     return (
         <React.Fragment>
             <Navbar />
@@ -461,7 +501,9 @@ export default function ProfilePage() {
                                         Password
                                     </p>
                                     <p className="mt-1 text-sm text-neutral-600">
-                                        Last changed 4 months ago
+                                        {formatLastChanged(
+                                            userData?.password_changed_at,
+                                        )}
                                     </p>
                                 </div>
                                 <button
